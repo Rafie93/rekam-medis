@@ -243,7 +243,7 @@
                 }).then((result) => {
                   console.log(result);
                   if (result.value) {
-                      window.location = "/petugas/"+id+"/delete";
+                      window.location = "{{Route('petugas.delete',"+id+")}}" ;
                   }
                 });
             });

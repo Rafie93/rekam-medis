@@ -232,7 +232,7 @@
                 }).then((result) => {
                   console.log(result);
                   if (result.value) {
-                      window.location = "/rekam/"+id+"/delete";
+                      window.location = "{{Route('rekam.delete',"+id+")}}" ;
                   }
                 });
             });

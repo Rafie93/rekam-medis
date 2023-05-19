@@ -271,7 +271,7 @@
                 }).then((result) => {
                   console.log(result);
                   if (result.value) {
-                      window.location = "/poliklinik/"+id+"/delete";
+                      window.location = "{{Route('obat.delete',"+id+")}}" ;
                   }
                 });
             });

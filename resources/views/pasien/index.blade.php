@@ -113,7 +113,7 @@
                 }).then((result) => {
                   console.log(result);
                   if (result.value) {
-                      window.location = "/pasien/"+id+"/delete";
+                      window.location = "{{Route('pasien.delete',"+id+")}}" ;
                   }
                 });
             });

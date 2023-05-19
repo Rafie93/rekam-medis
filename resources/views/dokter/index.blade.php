@@ -277,7 +277,7 @@
                 }).then((result) => {
                   console.log(result);
                   if (result.value) {
-                      window.location = "/dokter/"+id+"/delete";
+                      window.location = "{{Route('dokter.delete',"+id+")}}" ;
                   }
                 });
             });

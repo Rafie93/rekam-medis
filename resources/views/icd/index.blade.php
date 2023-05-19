@@ -169,7 +169,7 @@
                 }).then((result) => {
                   console.log(result);
                   if (result.value) {
-                      window.location = "/icd/"+id+"/delete";
+                      window.location = "{{Route('icd.delete',"+id+")}}" ;
                   }
                 });
             });
