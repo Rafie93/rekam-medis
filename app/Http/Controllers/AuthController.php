@@ -43,16 +43,14 @@ class AuthController extends Controller
     }
     public function updatepassword(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
+        $this->validate($request,[
             'password' => 'required|min:6',
-            'password_konfirm' => 'required|min:6',
+            'password_konfirm' => 'required_with:password|same:password|min:6'
         ]);
-        if ($validator->fails()) {
-            return redirect('/forgot/'.$id.'/reset')->with('gagal','Cek password baru anda');
-        }
-
+      
         $password = bcrypt($request->password);
-        User::where('id', $id)->update(['password' => $password,'updated_at'=>Carbon::now()->format('Y-m-d H:i:s')]);
-        return redirect('/login')->with('sukses','Selamat, password anda sudah diperbaharui');
+        User::where('id', $id)->update(['password' => $password,
+        'updated_at'=>Carbon::now()->format('Y-m-d H:i:s')]);
+        return redirect()->route('petugas')->with('sukses','Selamat, password anda sudah diperbaharui');
     }
 }

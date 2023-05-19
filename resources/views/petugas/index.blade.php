@@ -114,8 +114,52 @@
                                     <td>{{$row->status_display()}}</td>
                                     <td>
                                         <div class="d-flex">
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#key{{$row->id}}" 
+                                                class="btn btn-warning shadow btn-xs sharp mr-1"><i class="fa fa-key"></i></a>
+
                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#edit{{$row->id}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
                                             <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-name="{{$row->nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
+
+                                            <div class="modal fade" id="key{{$row->id}}">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Ganti Password</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{Route('gantipassword',$row->id)}}" method="POST">
+                                                                {{ csrf_field() }}
+                                                               
+                                                                <div class="form-group">
+                                                                    <label class="text-black font-w500">Password Baru*</label>
+                                                                    <input type="password" name="password"
+                                                                    required class="form-control">
+                                                                    @error('password')
+                                                                    <div class="invalid-feedback animated fadeInUp"
+                                                                    style="display: block;">{{$message}}</div>
+                                                                    @enderror
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label class="text-black font-w500">Password Konfirmasi*</label>
+                                                                    <input type="password" name="password_konfirm"
+                                                                    required class="form-control">
+                                                                    @error('password_konfirm')
+                                                                    <div class="invalid-feedback animated fadeInUp"
+                                                                    style="display: block;">{{$message}}</div>
+                                                                    @enderror
+                                                                </div>
+                                                                
+                                                                <div class="form-group">
+                                                                    <button type="submit" class="btn btn-primary">GANTI PASSWORD</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <div class="modal fade" id="edit{{$row->id}}">
                                                 <div class="modal-dialog" role="document">

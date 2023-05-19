@@ -31,7 +31,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/dokter/store', [DokterController::class, 'store'])->name('dokter.store');
     Route::post('/dokter/{id}/update', [DokterController::class, 'update'])->name('dokter.update');
     Route::get('/dokter/{id}/delete', [DokterController::class, 'delete'])->name('dokter.delete');
+    Route::post('/dokter/{id}/gantipassword', [DokterController::class, 'updatepassword'])->name('dokter.gantipassword');
 
+    Route::post('/gantipassword/{id}', [AuthController::class, 'updatepassword'])->name('gantipassword');
     Route::get('/petugas', [PetugasController::class, 'index'])->name('petugas');
     Route::post('/petugas/store', [PetugasController::class, 'store'])->name('petugas.store');
     Route::post('/petugas/{id}/update', [PetugasController::class, 'update'])->name('petugas.update');

@@ -8,7 +8,8 @@ class Rekam extends Model
 {
     protected $table = "rekam";
     protected $fillable = ["tgl_rekam","pasien_id","keluhan","poli","dokter_id","pemeriksaan",
-    "no_rekam","diagnosa","tindakan","status","petugas_id","biaya","cara_bayar"];
+    "no_rekam","diagnosa","tindakan","status","petugas_id","biaya_pemeriksaan","biaya_tindakan",
+    "biaya_obat","total_biaya","cara_bayar"];
 
     function pasien(){
         return $this->belongsTo(Pasien::class);

@@ -6,6 +6,7 @@ use App\Models\Dokter;
 use App\Models\Poli;
 use App\Models\Rekam;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -107,5 +108,18 @@ class DokterController extends Controller
                     ->where('poli',$poli)->get();
 
         return response()->json([ 'success' => true,'data' => $data],200);
+    }
+
+    public function updatepassword(Request $request, $id)
+    {
+        $this->validate($request,[
+            'password' => 'required|min:6',
+            'password_konfirm' => 'required_with:password|same:password|min:6'
+        ]);
+      
+        $password = bcrypt($request->password);
+        User::where('id', $id)->update(['password' => $password,
+        'updated_at'=>Carbon::now()->format('Y-m-d H:i:s')]);
+        return redirect()->route('dokter')->with('sukses','Selamat, password anda sudah diperbaharui');
     }
 }
