@@ -59,7 +59,8 @@
                                            <i class="fa fa-eye"></i></a>
                                         <a href="{{Route('pasien.edit',$row->id)}}" class="btn btn-info shadow btn-xs sharp mr-1">
                                             <i class="fa fa-pencil"></i></a>
-                                        <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-name="{{$row->nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
+                                        <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-link="{{Route('pasien.delete',$row->id)}}"
+                                         r-name="{{$row->nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
 
                                    </td>
                                    
@@ -102,6 +103,7 @@
             $(".delete").click(function() {
                  var id = $(this).attr('r-id');
                  var name = $(this).attr('r-name');
+                 var link = $(this).attr('r-link');
                  Swal.fire({
                   title: 'Ingin Menghapus?',
                   text: "Yakin ingin menghapus data  : "+name+" ini ?" ,
@@ -113,7 +115,7 @@
                 }).then((result) => {
                   console.log(result);
                   if (result.value) {
-                      window.location = "{{Route('pasien.delete',"+id+")}}" ;
+                      window.location = link;
                   }
                 });
             });

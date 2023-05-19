@@ -97,7 +97,8 @@
                                     <td>
                                         <div class="d-flex">
                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#editPoli{{$row->code}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-                                            <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-name="{{$row->name_id}}" r-id="{{$row->code}}"><i class="fa fa-trash"></i></a>
+                                            <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-link="{{Route('icd.delete',$row->code)}}"
+                                            r-name="{{$row->name_id}}" r-id="{{$row->code}}"><i class="fa fa-trash"></i></a>
 
                                             <div class="modal fade" id="editPoli{{$row->code}}">
                                                 <div class="modal-dialog" role="document">
@@ -158,6 +159,8 @@
             $(".delete").click(function() {
                  var id = $(this).attr('r-id');
                  var name = $(this).attr('r-name');
+                 var link = $(this).attr('r-link');
+
                  Swal.fire({
                   title: 'Ingin Menghapus?',
                   text: "Yakin ingin menghapus data  : "+name+" ini ?" ,
@@ -169,7 +172,7 @@
                 }).then((result) => {
                   console.log(result);
                   if (result.value) {
-                      window.location = "{{Route('icd.delete',"+id+")}}" ;
+                      window.location = link;
                   }
                 });
             });

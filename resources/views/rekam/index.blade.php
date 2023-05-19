@@ -195,7 +195,8 @@
 
                                         {{-- <a href="javascript:void(0)" data-toggle="modal" data-target="#editPoli{{$row->id}}" class="btn btn-primary shadow btn-xs sharp mr-1">
                                             <i class="fa fa-pencil"></i></a> --}}
-                                        <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-name="{{$row->pasien_nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
+                                        <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-link="{{Route('rekam.delete',$row->id)}}"
+                                         r-name="{{$row->pasien_nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
                                     </div>
                                 </td>
                                 </tr>
@@ -221,6 +222,8 @@
             $(".delete").click(function() {
                  var id = $(this).attr('r-id');
                  var name = $(this).attr('r-name');
+                 var link = $(this).attr('r-link');
+
                  Swal.fire({
                   title: 'Ingin Menghapus?',
                   text: "Yakin ingin menghapus data  : "+name+" ini ?" ,
@@ -232,7 +235,7 @@
                 }).then((result) => {
                   console.log(result);
                   if (result.value) {
-                      window.location = "{{Route('rekam.delete',"+id+")}}" ;
+                      window.location = link;
                   }
                 });
             });

@@ -134,7 +134,8 @@
                                                 class="btn btn-warning shadow btn-xs sharp mr-1"><i class="fa fa-key"></i></a>
 
                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#edit{{$row->id}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-                                            <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-name="{{$row->nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
+                                            <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-link="{{Route('dokter.delete',$row->id)}}"
+                                             r-name="{{$row->nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
 
                                             <div class="modal fade" id="key{{$row->user_id}}">
                                                 <div class="modal-dialog" role="document">
@@ -266,6 +267,7 @@
             $(".delete").click(function() {
                  var id = $(this).attr('r-id');
                  var name = $(this).attr('r-name');
+                 var link = $(this).attr('r-link');
                  Swal.fire({
                   title: 'Ingin Menghapus?',
                   text: "Yakin ingin menghapus data  : "+name+" ini ?" ,
@@ -277,7 +279,7 @@
                 }).then((result) => {
                   console.log(result);
                   if (result.value) {
-                      window.location = "{{Route('dokter.delete',"+id+")}}" ;
+                      window.location = link;
                   }
                 });
             });
