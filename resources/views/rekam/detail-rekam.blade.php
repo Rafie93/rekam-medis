@@ -1,163 +1,24 @@
 @extends('layout.apps')
 @section('content')
-{{-- BREADCRUMBS --}}
-<div class="form-head page-titles d-flex align-items-center mb-sm-4 mb-3">
-    <div class="mr-auto">
-        <h2 class="text-black font-w600">Pasien Detail</h2>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">Patient</a></li>
-            <li class="breadcrumb-item"><a href="javascript:void(0)">RM#{{$pasien->no_rm}}</a></li>
-            
-        </ol>
-    </div>
-    <div class="d-flex">
-        @if ($rekamLatest)
-            {!! $rekamLatest->status_display() !!}
-        @endif  
-    </div>
-</div>
-{{-- MODAL PEMERIKSAAN --}}
-<!-- Add -->
-<div class="modal fade" id="addPemeriksaan">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Pemeriksaan </h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{Route('pemeriksaan.update')}}" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" id="rekamId" name="rekam_id" value="0">
-                    <input type="hidden" id="pasienId" name="pasien_id" value="{{$pasien->id}}">
-                    <div class="form-group">
-                        <label class="text-black font-w500">Pemeriksaan*</label>
-                        <textarea name="pemeriksaan"  required
-                        id="editor" 
-                        class="form-control" 
-                        rows="10"></textarea>
-                        @error('pemeriksaan')
-                        <div class="invalid-feedback animated fadeInUp"
-                        style="display: block;">{{$message}}</div>
-                        @enderror
-                       
-                    </div>
-                    
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">UPDATE</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{{-- MODAL TINAKAN --}}
-<!-- Add -->
-<div class="modal fade" id="addTindakan">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tindakan </h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{Route('tindakan.update')}}" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" id="rekamId" name="rekam_id" value="0">
-                    <input type="hidden" id="pasienId" name="pasien_id" value="{{$pasien->id}}">
-                    <div class="form-group">
-                        <label class="text-black font-w500">Tindakan*</label>
-                        <textarea name="tindakan"  
-                        id="editor2" required
-                        class="form-control" 
-                        rows="10"></textarea>
-                        @error('tindakan')
-                        <div class="invalid-feedback animated fadeInUp"
-                        style="display: block;">{{$message}}</div>
-                        @enderror
-                       
-                    </div>
-                    
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">UPDATE</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
+@include('rekam.partial.modal-pemeriksaan')
+{{-- MODAL TINAKAN --}}
+@include('rekam.partial.modal-tindakan')
 {{-- MODAL Diagnosa --}}
-<!-- Add -->
-<div class="modal fade" id="addDiagnosa">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Cari Diagnosa </h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{Route('diagnosa.update')}}" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" id="rekamId" name="rekam_id" value="0">
-                    <input type="hidden" id="pasienId" name="pasien_id" value="{{$pasien->id}}">
-                    <div class="form-group">
-                        {{-- <textarea name="diagnosa"  required
-                        id="editor" 
-                        class="form-control" 
-                        rows="10"></textarea> --}}
-                        <div class="row">
-                            <table class="display dataTablesCard white-border table-responsive-sm"
-                                style="width: 100%"
-                             id="icd-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 5%">#</th>
-                                        <th style="width: 15%">Kode</th>
-                                        <th style="width: 80%">Nama</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        @error('diagnosa')
-                        <div class="invalid-feedback animated fadeInUp"
-                        style="display: block;">{{$message}}</div>
-                        @enderror
-                       
-                    </div>
-                    
-                   
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+@include('rekam.partial.modal-diagnosa')
+
+{{-- @include('rekam.partial.modal-rekam-gigi') --}}
 
 {{-- DATA --}}
-    <div class="row">
-       
-        <div class="col-xl-3 col-xxl-12">
+    <div class="row">   
+        <div class="">
             <div class="row">
-                <div class="col-xl-12 col-xxl-5 col-lg-5">
+                <div class="col-sm-12 col-sm-5 col-lg-5">
                     <div class="card">
                         <div class="card-header border-0 pb-0">
                             <h4 class="fs-20 text-black mb-0">Detail Pasien</h4>
                             <div class="dropdown">
-                                <div class="btn-link" role="button" data-toggle="dropdown" aria-expanded="false">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11Z" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        <path d="M12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18Z" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        <path d="M12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4Z" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </svg>
-                                </div>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">Accept Patient</a>
-                                    <a class="dropdown-item" href="#">Reject Order</a>
-                                    <a class="dropdown-item" href="#">View Details</a>
-                                </div>
+                                RM#  {{$pasien->no_rm}}
                             </div>
                         </div>
                         <div class="card-body">
@@ -169,7 +30,6 @@
                                     <h3 class="fs-18 font-w600 mb-1"><a href="javascript:void(0)"
                                          class="text-black">{{$pasien->nama}}</a></h3>
                                     <h4 class="fs-14 font-w600 mb-1">{{$pasien->tmp_lahir.", ".$pasien->tgl_lahir}}</h4>
-                                    <h4 class="fs-14 font-w600 mb-1">{{$pasien->agama}}</h4>
                                     <h4 class="fs-14 font-w600 mb-1">{{$pasien->jk.", ".$pasien->status_menikah}}</h4>
                                     <span class="fs-14">{{$pasien->alamat_lengkap}}</span>
                                     <span class="fs-14">{{$pasien->keluhan.", ".$pasien->kecamatan.", ".$pasien->kabupaten.", ".$pasien->kewarganegaraan}}</span>
@@ -181,12 +41,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-12 col-xxl-7 col-lg-7">
+                <div class="col-sm-12 col-sm-7 col-lg-7">
                     <div class="card">
                         <div class="card-header border-0 pb-0">
-                            <div>
-                                <h4 class="fs-20 text-black mb-1">Info Pasien</h4>
-                                <span class="fs-12">Rincian Data Pasien</span>
+                            <h4 class="fs-20 text-black mb-0">Info Pasien</h4>
+                            <div class="dropdown">
+                                 @if ($rekamLatest)
+                                    {!! $rekamLatest->status_display() !!}
+                                @endif 
+                                @if (auth()->user()->role_display()=="Admin")
+                                <a href="{{Route('pasien.edit',$pasien->id)}}" style="width: 120px"
+                                    class="btn-rounded btn-info btn-xs "><i class="fa fa-pencil"></i> Edit Pasien</a>
+                                @endif
+                              
+                                
                             </div>
                         </div>
                         <div class="card-body">
@@ -204,28 +72,7 @@
                                            <p>{{$pasien->no_hp}}</p>
                                         </div>
                                     </div>
-                                    <div class="d-flex mb-3 align-items-center">
-                                        <span class="fs-12 col-6 p-0 text-black">
-                                            <svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect width="19" height="19" fill="#FFD439"/>
-                                            </svg>
-                                            Pendidikan
-                                        </span>
-                                        <div class="col-8 p-0">
-                                            <p>{{$pasien->pendidikan}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex mb-3 align-items-center">
-                                        <span class="fs-12 col-6 p-0 text-black">
-                                            <svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect width="19" height="19" fill="#FF6E5A"/>
-                                            </svg>
-                                            Pekerjaan
-                                        </span>
-                                        <div class="col-8 p-0">
-                                            <p>{{$pasien->pekerjaan}}</p>
-                                        </div>
-                                    </div>
+                                   
                                     <div class="d-flex align-items-center">
                                         <span class="fs-12 col-6 p-0 text-black">
                                             <svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -234,11 +81,25 @@
                                             Pembayaran
                                         </span>
                                         <div class="col-8 p-0">
-                                           
+                                           @if ($rekamLatest)
                                             <p>{{$rekamLatest->cara_bayar}}</p>
-                                            @if ($rekamLatest->cara_bayar!="Umum/Mandiri")
                                             <p>{{$pasien->no_bpjs}}</p>
-                                            @endif
+                                           @else 
+                                            <p>{{$pasien->cara_bayar}}</p>
+                                            <p>{{$pasien->no_bpjs}}</p>
+                                           @endif
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-3 align-items-center">
+                                        <span class="fs-12 col-6 p-0 text-black">
+                                            <svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect width="19" height="19" fill="#5F74BF"/>
+                                            </svg>
+                                            Alergi
+                                        </span>
+                                        <div class="col-8 p-0">
+                                           <p>{{$pasien->alergi}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -246,7 +107,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-12">
+
+                <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header border-0 pb-0">
                             <h4 class="fs-20 text-black mb-0">Rekam Medis Pasien</h4>
@@ -285,71 +147,99 @@
                             @endif
                             
                         </div>
-                        <div class="card-body pt-3">
-                            <div class="table-responsive">
-                                <table  class="table table-responsive-md table-bordered">
+                        <div class="card-body">
+                            <div class="table-responsive card-table">
+                                <table  class="table table-sm table-responsive-md table-bordered">
                                     <thead>
                                         <tr>
-                                            <th><strong>No</strong></th>
-                                            {{-- <th><strong>Status</strong></th> --}}
-                                            <th><strong>Tgl Periksa</strong></th>
-                                            <th><strong>Keluhan / Anamnesa</strong></th>
-                                            <th><strong>Pemeriksaan Klinik</strong></th>
-                                            <th><strong>Diagnosa</strong></th>
-                                            <th><strong>Terapi & Tindakan</strong></th>
-                                            <th><strong>#</strong></th>
+                                            <th>No</th>
+                                            <th>Tgl Periksa</th>
+                                            <th>Dokter</th>
+                                            <th>Anamnesa (S)</th>
+                                            <th>Pemeriksaan (O)</th>
+                                            <th>Diagnosa (A)</th>
+                                            <th>Tindakan (P)</th>
+                                            <th>#</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($rekams as $key=>$row)
                                             <tr>
                                                 <td>{{ $rekams->firstItem() + $key }}</td>
-                                                {{-- <td>{!!$row->status_rekams()!!}</td> --}}
                                             <td>{{$row->tgl_rekam}}</td>
+                                            <td>{{$row->dokter->nama}}
+                                                <br><strong>{{$row->poli}}</strong>
+                                            </td>
                                             <td>{{$row->keluhan}}</td>
-                                            <td>{!! $row->pemeriksaan !!}</td>
-                                            <td>{{$row->diagnosa}}
-                                                @if ($row->diagnosa!=null)
-                                                    <br/>{{$row->diagnosis->name_id}}
+                                            <td>
+                                                @if ($row->poli=="Poli Gigi")
+                                                    @foreach ($row->gigi() as $item)
+                                                        <li>Gigi {{$item->elemen_gigi}}</li>
+                                                    @endforeach
+                                                @else 
+                                                    {!! $row->pemeriksaan !!}</td>
                                                 @endif
-                                            <td>{!! $row->tindakan !!}</td>
-                                            {{-- <td>{!!$row->status_display()!!}</td> --}}
+                                            <td>
+                                                @if ($row->poli=="Poli Gigi")
+                                                    @foreach ($row->gigi() as $item)
+                                                        <li>{{$item->diagnosa.", ".$item->diagnosis->name_id}}</li>
+                                                    @endforeach
+                                                @else 
+                                                    {{$row->diagnosa}}
+                                                    @if ($row->diagnosa!=null)
+                                                        <br/>{{$row->diagnosis->name_id}}
+                                                    @endif
+                                                @endif
+                                            <td>
+                                                @if ($row->poli=="Poli Gigi")
+                                                    @foreach ($row->gigi() as $item)
+                                                        <li>{{$item->tindak->nama}}</li>
+                                                    @endforeach
+                                                @else 
+                                                     {!! $row->tindakan !!}</td>
+                                                @endif
                                             <td>
                                                 
                                             @if ($row->status!=5 && $row->status!=4)
                                             <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+                                               @if ($row->poli!="Poli Gigi")
+                                                    @if (auth()->user()->role_display() == "Dokter" 
+                                                    || auth()->user()->role_display() == "Admin"
+                                                    || auth()->user()->role_display() == "Pendaftaran")
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#addPemeriksaan"
+                                                        data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
+                                                        data-pemeriksaan="{{$row->pemeriksaan}}" style="width: 120px"
+                                                        class="btn-rounded btn-info btn-xs addPemeriksaan"><i class="fa fa-pencil"></i> Object</a>
+                                                    @endif
+                                                        
+                                                    @if (auth()->user()->role_display() == "Dokter" || auth()->user()->role_display() == "Admin")
+                                                        <a href="javascript:void(0)" data-toggle="modal" 
+                                                            data-target="#addDiagnosa"
+                                                            data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
+                                                            data-tindakan="{{$row->tindakan}}" style="width: 120px"
+                                                            class="btn-rounded btn-primary btn-xs addDiagnosa">
+                                                            <i class="fa fa-pencil"></i>Assessment</a>
+                                                            
+                                                            <a href="javascript:void(0)" data-toggle="modal" 
+                                                            data-target="#addTindakan"
+                                                            data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
+                                                            data-tindakan="{{$row->tindakan}}" style="width: 120px"
+                                                            class="btn-rounded btn-success btn-xs addTindakan">
+                                                            <i class="fa fa-pencil"></i>Plan</a>
+                                                    @endif
+                                                @else 
+                                                    @if (auth()->user()->role_display() == "Dokter" 
+                                                    || auth()->user()->role_display() == "Admin")
+                                                        <a href="{{Route('rekam.gigi.add',$row->id)}}" style="width: 120px"
+                                                        class="btn-rounded btn-info btn-xs "><i class="fa fa-pencil"></i> Rekam</a>
+                                                    @endif
+                                                @endif 
                                                 
-                                               @if (auth()->user()->role_display() == "Dokter" 
-                                               || auth()->user()->role_display() == "Admin"
-                                               || auth()->user()->role_display() == "Pendaftaran")
-                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#addPemeriksaan"
-                                                data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
-                                                data-pemeriksaan="{{$row->pemeriksaan}}" style="width: 150px"
-                                                class="btn-rounded btn-info btn-xs addPemeriksaan"><i class="fa fa-pencil"></i> Isi Pemeriksaan</a>
-                                               @endif
-                                                
-                                               @if (auth()->user()->role_display() == "Dokter" || auth()->user()->role_display() == "Admin")
-                                               <a href="javascript:void(0)" data-toggle="modal" 
-                                                data-target="#addDiagnosa"
-                                                data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
-                                                data-tindakan="{{$row->tindakan}}" style="width: 150px"
-                                                class="btn-rounded btn-primary btn-xs addDiagnosa">
-                                                <i class="fa fa-pencil"></i> Isi Diagnosa</a>
-                                                
-                                                <a href="javascript:void(0)" data-toggle="modal" 
-                                                data-target="#addTindakan"
-                                                data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
-                                                data-tindakan="{{$row->tindakan}}" style="width: 150px"
-                                                class="btn-rounded btn-success btn-xs addTindakan">
-                                                <i class="fa fa-pencil"></i> Isi Tindakan</a>
-
-
-                                                
-                                               @endif
+                                               
                                             </div>
                                             @else
                                                 <div class="d-flex">
-                                                    <a href="{{Route('obat.pengeluaran',$row->id)}}" class="btn btn-primary shadow btn-xs">
+                                                    <a href="{{Route('obat.pengeluaran',$row->id)}}" style="width: 120px" class="btn-rounded btn-primary btn-xs ">
                                                         <i class="fa fa-eye"></i> Obat</a>
                                                 </div>                                                   
                                             @endif
@@ -421,7 +311,7 @@
         var rekamId = $(this).data('id');
         var pemeriksaan = $(this).data('pemeriksaan');
         $(".modal-body #rekamId").val( rekamId );
-        if(pemeriksaan==""){
+        if(pemeriksaan=="--"){
             pemeriksaan = '<table border="0" cellpadding="0" cellspacing="0" style="width:100%">'+
                     '<tbody>'+
                         '<tr>'+

@@ -16,9 +16,10 @@
     <link rel="stylesheet" href="{{asset('vendor/toastr/css/toastr.min.css')}}">
     <link href="{{asset('vendor/sweetalert2/dist/sweetalert2.min.css')}}" rel="stylesheet">
     <style>
-        p {
+    p {
         margin: 0;
     }
+    
     </style>
     @yield('header')
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
@@ -100,6 +101,8 @@
     <script src="{{asset('vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('vendor/toastr/js/toastr.min.js')}}"></script>
     <script src="{{asset('vendor/sweetalert2/dist/sweetalert2.min.js')}}"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    
 
 	<script>
         @if(Session::has('sukses'))
@@ -108,21 +111,110 @@
         @if(Session::has('gagal'))
             toastr.error("{{Session::get('gagal')}}", "Gagal",{timeOut: 5000})
         @endif
+
+        // pusher
+        var notificationsWrapper   = $('.dropdown-notifications');
+        var notificationsToggle    = notificationsWrapper.find('a[data-toggle]');
+        var notificationsCountElem = notificationsToggle.find('i[data-count]');
+        var notificationsCount     = parseInt(notificationsCountElem.data('count'));
+        var notifications          = notificationsWrapper.find('ul.timeline');
+
+        // if (notificationsCount <= 0) {
+        //     notificationsWrapper.hide();
+        // }
+
+        // Enable pusher logging - don't include this in production
+        // Pusher.logToConsole = true;
+
+        var pusher = new Pusher('d0f5c330385c88c7da90', {
+            cluster: 'ap1'
+        });
+
+        var user_id = "{{auth()->user()->id}}";
+        var role = "{{auth()->user()->role_display()}}";
+
+        // Subscribe to the channel we specified in our Laravel Event
+        var channel = pusher.subscribe('status-rekam-updated-'+user_id);
+
+        // Bind a function to a Event (the full Laravel class)
+        channel.bind('App\\Events\\StatusRekamUpdate', function(data) {
+            var existingNotifications = notifications.html();
+            var avatar = Math.floor(Math.random() * (71 - 20 + 1)) + 20;
+            var newNotificationHtml = `
+            <li>
+                <div class="timeline-panel">
+                   
+                    <div class="media-body">
+                        <h6 class="mb-1">`+data.no_rekam+`</h6>
+                        <h6 class="mb-1">`+data.message+`</h6>
+                        <small class="d-block">`+data.created_at+`</small>
+                        <a href="`+data.link+`">Klik Proses</a>
+                    </div>
+                </div>
+            </li>
+            `;
+            notifications.html(newNotificationHtml + existingNotifications);
+
+            notificationsCount += 1;
+            notificationsCountElem.attr('data-count', notificationsCount);
+            notificationsWrapper.find('.notif-count').text(notificationsCount);
+            // $("#data-count").html(notificationsCount);
+            notificationsWrapper.show();
+
+            
+            if(role=="Dokter"){
+                var listPeriksaDokter = `
+                    <div class="d-flex pb-3 border-bottom mb-3 align-items-end">
+                        <div class="mr-auto">
+                            <p class="text-black font-w600 mb-2"><a href="#">`+data.no_rekam+`</a></p>
+                            <ul>
+                                <li><i class="las la-clock"></i>Time : `+data.created_at+`</li>
+                                <li><i class="las la-clock"></i>No Rekam : `+data.no_rekam+`</li>
+                                <li><i class="las la-user"></i>`+data.message+`</li>
+                            </ul>
+                        </div>
+                        <a href="`+data.link+`" 
+                            class="btn-rounded btn-primary btn-xs"><i class="fa fa-user-md"></i> Periksa</a>
+                    </div>`;
+
+                    $("#antrian-list-notif").append(listPeriksaDokter);
+            }else if(role=="Apotek"){
+                var listPermintaanObat = `
+                    <div class="d-flex pb-3 border-bottom mb-3 align-items-end">
+                        <div class="mr-auto">
+                            <p class="text-black font-w600 mb-2"><a href="#">`+data.no_rekam+`</a></p>
+                            <ul>
+                                <li><i class="las la-clock"></i>Time : `+data.created_at+`</li>
+                                <li><i class="las la-clock"></i>No Rekam : `+data.no_rekam+`</li>
+                                <li><i class="las la-user"></i>`+data.message+`</li>
+                            </ul>
+                        </div>
+                        <a href="`+data.link+`" 
+                            class="btn-rounded btn-primary btn-xs"><i class="fa fa-user-md"></i> Berikan Obat</a>
+                    </div>`;
+
+                    $("#obat-list-notif").append(listPermintaanObat);
+            }
         
-		(function($) {
-			var table = $('#example5').DataTable({
-				searching: true,
-				paging:true,
-				select: false,
-				//info: false,         
-				lengthChange:false 
+
+           
+        });
+        //end pusher
+        
+		// (function($) {
+		// 	var table = $('#example5').DataTable({
+		// 		searching: true,
+		// 		paging:true,
+		// 		select: false,
+		// 		//info: false,         
+		// 		lengthChange:false 
 				
-			});
-			$('#example tbody').on('click', 'tr', function () {
-				var data = table.row( this ).data();
+		// 	});
+		// 	$('#example tbody').on('click', 'tr', function () {
+		// 		var data = table.row( this ).data();
 				
-			});
-		})(jQuery);
+		// 	});
+		// })(jQuery);
 	</script>
     @yield('script')
 </body>

@@ -27,15 +27,15 @@
                     <table  class="table table-responsive-md">
                         <thead>
                             <tr>
-                                <th><strong>No</strong></th>
-                                <th><strong>Tgl Keluar</strong></th>
-                                <th><strong>Kd Obat</strong></th>
-                                <th><strong>Nama Obat</strong></th>
-                                <th><strong>Jumlah</strong></th>
-                                <th><strong>Satuan</strong></th>
-                                <th><strong>Harga</strong></th>
-                                <th><strong>Sub Total</strong></th>
-                                <th><strong>Cara Bayar</strong></th>
+                                <th>No</th>
+                                <th>Tgl Keluar</th>
+                                <th>Kd Obat</th>
+                                <th>Nama Obat</th>
+                                <th>Jumlah</th>
+                                <th>Satuan</th>
+                                <th>Harga</th>
+                                <th>Sub Total</th>
+                                <th>Cara Bayar</th>
                             </tr>
                         </thead>
                         <tbody>

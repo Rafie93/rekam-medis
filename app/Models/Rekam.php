@@ -11,6 +11,10 @@ class Rekam extends Model
     "no_rekam","diagnosa","tindakan","status","petugas_id","biaya_pemeriksaan","biaya_tindakan",
     "biaya_obat","total_biaya","cara_bayar"];
 
+    function gigi(){
+      return  RekamGigi::where('rekam_id',$this->id)->get();
+    }
+
     function pasien(){
         return $this->belongsTo(Pasien::class);
     }
@@ -50,17 +54,17 @@ class Rekam extends Model
             case 1:
                 return '<span class="badge badge-outline-warning">
                             <i class="fa fa-circle text-warning mr-1"></i>
-                            Mendaftar / Antrian
+                             Antrian
                         </span>';
             break;
             case 2:
                 return '<span class="badge badge-info light">
-                                <i class="fa fa-circle text-info mr-1"></i>
-                                Pemeriksaan
+                            <i class="fa fa-circle text-info mr-1"></i>
+                            Pemeriksaan
                         </span>';
             break;
             case 3:
-                return '<span class="badge badge-warning light">
+                return '<span class="badge badge-warning light" style="width:100px">
                             <i class="fa fa-circle text-light mr-1"></i>
                             Menunggu Obat
                         </span>';
@@ -72,7 +76,7 @@ class Rekam extends Model
                         </span>';
             break;
             case 5:
-                return '<span class="badge badge-primary light">
+                return '<span class="badge badge-primary light" style="width:100px">
                             <i class="fa fa-check text-primary mr-1"></i>
                             Selesai
                         </span>';

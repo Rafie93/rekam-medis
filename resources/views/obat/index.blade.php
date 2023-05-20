@@ -124,14 +124,14 @@
                         <thead>
                             <tr>
                                 
-                                <th><strong>No</strong></th>
-                                <th><strong>Kd Obat</strong></th>
-                                <th><strong>Nama Obat</strong></th>
-                                <th><strong>Satuan</strong></th>
-                                <th><strong>Stok</strong></th>
-                                <th><strong>Harga</strong></th>
-                                <th><strong>Untuk BPJS</strong></th>
-                                <th><strong>Aksi</strong></th>
+                                <th>No</th>
+                                <th>Kd Obat</th>
+                                <th>Nama Obat</th>
+                                <th>Satuan</th>
+                                <th>Stok</th>
+                                <th>Harga</th>
+                                <th>Untuk BPJS</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

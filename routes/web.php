@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\StatusRekamUpdate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -12,11 +13,17 @@ use App\Http\Controllers\PengeluaranObatController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PoliController;
 use App\Http\Controllers\RekamController;
+use App\Http\Controllers\TindakanController;
 
 Route::get('/', [AuthController::class, 'page_login'])->name('login');
 Route::post('/login', [AuthController::class, 'auth'])->name('login.auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('test', function () {
+    StatusRekamUpdate::dispatch("5","REG002","INI TEST AJA","http://sss","25 05 1993");
+	// event(new App\Events\StatusRekamUpdate("082240300501"));
+	return "Event has been sent!";
+});
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -43,6 +50,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/pasien/add', [PasienController::class, 'add'])->name('pasien.add');
     Route::get('/pasien/{id}/edit', [PasienController::class, 'edit'])->name('pasien.edit');
     Route::get('/pasien/{id}/delete', [PasienController::class, 'delete'])->name('pasien.delete');
+    Route::get('/pasien/json', [PasienController::class, 'json'])->name('pasien.json');
 
     Route::post('/pasien/store', [PasienController::class, 'store'])->name('pasien.store');
     Route::post('/pasien/{id}/update', [PasienController::class, 'update'])->name('pasien.update');
@@ -61,14 +69,24 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/icd/{id}/update', [IcdController::class, 'update'])->name('icd.update');
     Route::get('/icd/{id}/delete', [IcdController::class, 'delete'])->name('icd.delete');
 
+    Route::get('/tindakan', [TindakanController::class, 'index'])->name('tindakan');
+    Route::post('/tindakan/store', [TindakanController::class, 'store'])->name('tindakan.store');
+    Route::post('/tindakan/{id}/update', [TindakanController::class, 'update'])->name('tindakan.update');
+    Route::get('/tindakan/{id}/delete', [TindakanController::class, 'delete'])->name('tindakan.delete');
+
 
     Route::get('/rekam', [RekamController::class, 'index'])->name('rekam');
     Route::get('/rekam/add', [RekamController::class, 'add'])->name('rekam.add');
+    Route::get('/rekam/{id}/edit', [RekamController::class, 'edit'])->name('rekam.edit');
 
     Route::post('/rekam/store', [RekamController::class, 'store'])->name('rekam.store');
     Route::get('/rekam/pasien/{id}', [RekamController::class, 'detail'])->name('rekam.detail');
 
     Route::get('/rekam/{id}/delete', [RekamController::class, 'delete'])->name('rekam.delete');
+    Route::post('/rekam/{id}/update', [RekamController::class, 'update'])->name('rekam.update');
+
+    Route::get('/rekam/gigi/{id}', [RekamController::class, 'rekam_gigi'])->name('rekam.gigi.add');
+    Route::post('/rekam/gigi/{id}/store', [RekamController::class, 'rekam_gigi_store'])->name('rekam.gigi.store');
 
     Route::post('/rekam/pemeriksaan/update', [RekamController::class, 'pemeriksaan_update'])->name('pemeriksaan.update');
     Route::post('/rekam/tindakan/update', [RekamController::class, 'tindakan_update'])->name('tindakan.update');

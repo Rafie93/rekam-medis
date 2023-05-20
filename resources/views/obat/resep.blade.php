@@ -29,12 +29,12 @@
                         <thead>
                             <tr>
                             
-                                <th><strong>No</strong></th>
-                                <th><strong>Tgl Periksa</strong></th>
-                                <th><strong>Nama Pasien</strong></th>
-                                <th><strong>Diagnosa</strong></th>
-                                <th><strong>Tindakan</strong></th>
-                                <th><strong>Aksi</strong></th>
+                                <th>No</th>
+                                <th>Tgl Periksa</th>
+                                <th>Nama Pasien</th>
+                                <th>Diagnosa</th>
+                                <th>Tindakan</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

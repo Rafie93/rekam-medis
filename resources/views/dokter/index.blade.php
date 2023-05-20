@@ -106,14 +106,14 @@
                         <thead>
                             <tr>
                                 
-                                <th><strong>No</strong></th>
-                                <th><strong>NIP</strong></th>
-                                <th><strong>Nama Dokter</strong></th>
-                                <th><strong>No. HP</strong></th>
-                                <th><strong>Alamat</strong></th>
-                                <th><strong>Poli</strong></th>
-                                <th><strong>Status</strong></th>
-                                <th><strong>Aksi</strong></th>
+                                <th>No</th>
+                                <th>NIP</th>
+                                <th>Nama Dokter</th>
+                                <th>No. HP</th>
+                                <th>Alamat</th>
+                                <th>Poli</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

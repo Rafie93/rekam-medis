@@ -94,12 +94,12 @@
                         <thead>
                             <tr>
                                 
-                                <th><strong>No</strong></th>
-                                <th><strong>Nama</strong></th>
-                                <th><strong>No. HP</strong></th>
-                                <th><strong>Role</strong></th>
-                                <th><strong>Status</strong></th>
-                                <th><strong>Aksi</strong></th>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>No. HP</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

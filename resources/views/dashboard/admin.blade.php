@@ -160,7 +160,6 @@
                                                     <li><i class="las la-clock"></i>Status : {!!$item->status_display()!!}</li>
                                                     <li><i class="las la-user"></i>Keluhan : {{$item->keluhan}}</li>
                                                     <li><i class="las la-user"></i>Doktor : {{$item->dokter->nama}}</li>
-                                                    <li><i class="las la-user"></i>Diagnosa {{$item->diagnosa}}</li>
                                                 </ul>
                                             </div>
                                             <a href="{{Route('rekam.detail',$item->pasien_id)}}" class="text-success mr-3 mb-2">

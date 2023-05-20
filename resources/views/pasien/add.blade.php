@@ -248,10 +248,20 @@
                                 style="display: block;">{{$message}}</div>
                                 @enderror
                             </div>
-                            <label class="col-sm-2 col-form-label" id="no_bpjs_label">No. BPJS</label>
+                            <label class="col-sm-2 col-form-label" id="no_bpjs_label">No. BPJS / KTP</label>
                             <div class="col-sm-4">
                                 <input type="number" class="form-control" id="no_bpjs" name="no_bpjs" value="{{old('no_bpjs')}}">
                                 @error('no_bpjs')
+                                <div class="invalid-feedback animated fadeInUp"
+                                style="display: block;">{{$message}}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Alergi</label>
+                            <div class="col-sm-10">
+                                <textarea name="alergi" class="form-control" rows="1">{{old('alergi')}}</textarea>
+                                @error('alergi')
                                 <div class="invalid-feedback animated fadeInUp"
                                 style="display: block;">{{$message}}</div>
                                 @enderror
@@ -269,20 +279,4 @@
         </div>
     </div>
 </div>
-@endsection
-@section('script')
-    <script>
-        $('input:radio[name="cara_bayar"]').change(
-         function(){
-            if ($(this).is(':checked') && $(this).val() == 'Jaminan Kesehatan') {
-               $("#no_bpjs").show();
-               $("#no_bpjs_label").show();
-            }else{
-                $("#no_bpjs").hide();
-                $("#no_bpjs_label").hide();
-                $("#no_bpjs").val("");
-
-            }
-        });
-    </script>
 @endsection

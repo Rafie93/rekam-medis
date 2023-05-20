@@ -22,7 +22,7 @@
             @if (auth()->user()->role_display()=='Admin' 
             || auth()->user()->role_display()=='Pendaftaran'
             )
-            <li><a href="{{Route('rekam',['tab'=>1])}}" class="ai-icon" aria-expanded="false">
+            <li><a href="{{Route('rekam')}}" class="ai-icon" aria-expanded="false">
                     <i class="flaticon-381-notepad"></i>
                     <span class="nav-text">Rekam Medis</span>
                 </a>
@@ -61,6 +61,7 @@
                     <span class="nav-text">Master Data</span>
                 </a>
                 <ul aria-expanded="false">
+                    <li><a href="{{Route('tindakan')}}">Tindakan</a></li>
                     <li><a href="{{Route('petugas')}}">Petugas</a></li>
                     <li><a href="{{Route('poli')}}">Poli</a></li>
                     <li><a href="{{Route('dokter')}}">Dokter</a></li>

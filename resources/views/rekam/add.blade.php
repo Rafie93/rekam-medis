@@ -21,7 +21,9 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive card-table"> 
-                    <table id="example5" class="display dataTablesCard white-border table-responsive-sm">
+                    <table class="display white-border table-responsive-sm"
+                            style="width: 100%"
+                        id="pasien-table">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -29,33 +31,11 @@
                                 <th>Nama Pasien</th>
                                 <th>Tgl Lahir</th>
                                 <th>No. HP</th>
-                                <th>Pengobatan</th>
+                                <th>Cara Bayar</th>
+                                <th>No BPJS/KTP</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($pasien as $key=>$row)
-                                <tr>
-                                    <td>
-                                        <a href="javascript:void(0)" 
-                                            data-id="{{$row->id}}" data-nama="{{$row->nama}}"
-                                            data-no="{{$row->no_rm}}"
-                                            data-metode="{{$row->cara_bayar}}"
-                                             class="btn btn-primary shadow btn-xs pilihPasien">
-                                            Pilih</a>
-                                    </td>
-                                    <td>RM#{{$row->no_rm}}</td>
-                                    <td>{{$row->nama}}</td>
-                                    <td>{{$row->tgl_lahir}}</td>
-                                    <td>{{$row->no_hp}}</td>
-                                    <td>{{$row->cara_bayar}}
-                                        @if ($row->cara_bayar=="Jaminan Kesehatan")
-                                            <br><strong> ({{$row->no_bpjs}})</strong>
-                                        @endif
-                                    </td>
-                                </tr>
-                                
-                            @endforeach
-                        </tbody>
+                        
                         
                     </table>
                 </div>
@@ -133,7 +113,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Keluhan*</label>
+                            <label class="col-sm-2 col-form-label">Anemnesa / <br>Keluhan*</label>
                             <div class="col-sm-10">
                                 <textarea name="keluhan" required class="form-control"
                                 rows="4">{{old('keluhan')}}</textarea>
@@ -193,6 +173,28 @@
 @endsection
 @section('script')
 <script>
+   $(function () {
+        var table = $('#pasien-table').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: true,
+            paging:true,
+            select: false,
+            pageLength: 5,
+            lengthChange:false ,
+            ajax: "{{ route('pasien.json') }}",
+            columns: [
+                {data: 'action', name: 'action'},
+                {data: 'no_rm', name: 'no_rm'},
+                {data: 'nama', name: 'nama'},
+                {data: 'tgl_lahir', name: 'tgl_lahir'},
+                {data: 'no_hp', name: 'no_hp'},
+                {data: 'cara_bayar', name: 'cara_bayar'},
+                {data: 'no_bpjs', name: 'no_bpjs'}              
+            ]
+        });
+        
+    });
     $( document ).ready(function() {
         $("#poli").change(function(e) {
             var poli = $("#poli").val();

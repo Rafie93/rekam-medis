@@ -16,6 +16,7 @@ class IcdController extends Controller
                     ->addColumn('action',function($data){
                         $button = '<a href="javascript:void(0)" 
                             data-id="'.$data->code.'"
+                            data-name="'.$data->name_id.'"
                             class="btn btn-primary shadow btn-xs pilihIcd">
                             Pilih</a>';
                         return $button;
@@ -26,6 +27,7 @@ class IcdController extends Controller
         ->addColumn('action',function($data){
             $button = '<a href="javascript:void(0)" 
                 data-id="'.$data->code.'"
+                data-name="'.$data->name_id.'"
                 class="btn btn-primary shadow btn-xs pilihIcd">
                 Pilih</a>';
             return $button;

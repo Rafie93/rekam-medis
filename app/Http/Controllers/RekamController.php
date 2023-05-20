@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StatusRekamUpdate;
 use App\Models\Dokter;
 use App\Models\Pasien;
 use App\Models\PengeluaranObat;
 use App\Models\Poli;
 use App\Models\Rekam;
+use App\Models\RekamGigi;
+use App\Models\Tindakan;
+use App\Notifications\RekamUpdateNotification;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+// use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Notification as Notification;
 
 class RekamController extends Controller
 {
@@ -17,6 +25,10 @@ class RekamController extends Controller
         $user = auth()->user();
         $role = $user->role_display();
         $rekams = Rekam::latest()
+                    ->when($request->keyword, function ($query) use ($request) {
+                        $query->where('tgl_rekam', 'LIKE', "%{$request->keyword}%")
+                        ->orwhere('cara_bayar', 'LIKE', "%{$request->keyword}%");
+                    })
                     ->when($role, function ($query) use ($role,$user){
                         if($role=="Dokter"){
                             $dokterId = Dokter::where('user_id',$user->id)->where('status',1)->first()->id;
@@ -41,10 +53,50 @@ class RekamController extends Controller
     public function add(Request $request)
     {
         $poli = Poli::all();
-        $pasien = Pasien::whereNull('deleted_at')->get();
-        return view('rekam.add',compact('poli','pasien'));
+        return view('rekam.add',compact('poli'));
     }
 
+    public function edit(Request $request,$id)
+    {
+        $poli = Poli::all();
+        $data = Rekam::find($id);
+        return view('rekam.edit',compact('data','poli'));
+    }
+
+    public function rekam_gigi(Request $request,$rekamId)
+    {
+        $rekam = Rekam::find($rekamId);
+        $tindakan = Tindakan::where('poli','Poli Gigi')->get();
+        return view('rekam.rekam-gigi',compact('rekam','tindakan'));
+    }
+
+    public function rekam_gigi_store(Request $request,$rekamId){
+        $rekam = Rekam::find($rekamId);
+        // dd($request->all());
+        try {
+            DB::beginTransaction();
+            if ($request->element_gigi) {
+                foreach ($request->element_gigi as $i => $elementId) {
+                    RekamGigi::create([
+                        'rekam_id' => $rekamId,
+                        'pasien_id' => $rekam->pasien_id,
+                        'elemen_gigi'  => $elementId,
+                        'diagnosa' => $request->diagnosa[$i],
+                        'tindakan' => $request->tindakan[$i],
+                        'status' =>1,
+                    ]);
+                }
+            }
+            DB::commit();
+            
+            return redirect()->route('rekam.detail',$rekam->pasien_id)->with('sukses','Rekam Gigi Berhasil ditambahkan');
+
+        } catch (\PDOException $e) {
+            DB::rollback();
+            return redirect()->route('rekam.gigi.add',$rekamId)->with('gagal','Data Gagal ditambahkan '.$e);
+
+        }   
+    }
     public function detail(Request $request,$pasien_id)
     {
         $pasien = Pasien::find($pasien_id);
@@ -55,6 +107,10 @@ class RekamController extends Controller
                                 ->where('status','!=',5)
                                 ->where('pasien_id',$pasien_id)
                                 ->first();
+        if($rekamLatest){
+           auth()->user()->notifications->where('data.no_rekam',$rekamLatest->no_rekam)->markAsRead();
+        //   dd($data);
+        }
 
         return view('rekam.detail-rekam',compact('pasien','rekams','rekamLatest'));
     }
@@ -95,6 +151,30 @@ class RekamController extends Controller
         Rekam::create($request->all());
         return redirect()->route('rekam.detail',$request->pasien_id)
                         ->with('sukses','Pendaftaran Berhasil,
+                         Silakan lakukan pemeriksaan dan teruskan ke dokter terkait');
+
+    }
+
+    function update(Request $request,$id){
+        $this->validate($request,[
+            'tgl_rekam' => 'required',
+            'pasien_id' => 'required',
+            'pasien_nama' => 'required',
+            'keluhan' => 'required',
+            'poli' => 'required',
+            'cara_bayar' => 'required',
+            'dokter_id' => 'required'
+        ]);
+        $pasien = Pasien::where('id',$request->pasien_id)->first();
+        if(!$pasien){
+            return redirect()->back()->withInput($request->input())
+                                ->withErrors(['pasien_id' => 'Data Pasien Tidak Ditemukan']);
+        }
+        
+        $rekam = Rekam::find($id);
+        $rekam->update($request->all());
+        return redirect()->route('rekam.detail',$request->pasien_id)
+                        ->with('sukses','Berhasil diperbaharui,
                          Silakan lakukan pemeriksaan dan teruskan ke dokter terkait');
 
     }
@@ -156,14 +236,20 @@ class RekamController extends Controller
     public function rekam_status(Request $request, $id, $status)
     {
         $rekam = Rekam::find($id);
-        if($status==2){
+        if($status==2 && $rekam->poli != "Poli Gigi"){
             if($rekam->pemeriksaan==null){
                 return redirect()->route('rekam.detail',$rekam->pasien_id)
                 ->with('gagal','Pemeriksaan Isi lebih dulu');
             }
         }
         if($status==3){
-            if($rekam->tindakan==null || $rekam->diagnosa==null){
+            if($rekam->poli=="Poli Gigi"){
+                if(RekamGigi::where('rekam_id',$id)->count() == 0){
+                    return redirect()->route('rekam.detail',$rekam->pasien_id)
+                    ->with('gagal','Pemeriksaan, Diagnosa, Tindakan Wajib diisi');
+                }
+
+            }else if($rekam->tindakan==null || $rekam->diagnosa==null){
                 return redirect()->route('rekam.detail',$rekam->pasien_id)
                 ->with('gagal','Tindakan dan Diagnosa Belum diisi');
             }
@@ -171,6 +257,36 @@ class RekamController extends Controller
         $rekam->update([
             'status' => $status
         ]);
+
+        $waktu = Carbon::parse($rekam->created_at)->format('d/m/Y H:i:s');
+        if($status==2){
+            $dokter = Dokter::find($rekam->dokter_id);
+            $user = User::find($dokter->user_id);
+            $message = "Pasien ".$rekam->pasien->nama.", silahkan diproses";
+            Notification::send($user, new RekamUpdateNotification($rekam,$message));
+            $link = Route('rekam.detail',$rekam->pasien_id);
+            event(new StatusRekamUpdate($user->id,$rekam->no_rekam,$message,$link,$waktu));
+
+        }else  if($status==3){
+            $user = User::where('role',4)->get();
+            $message = "Obat a\n Pasien ".$rekam->pasien->nama.", silahkan diproses";
+            Notification::send($user, new RekamUpdateNotification($rekam,$message));
+            foreach ($user as $key => $item) {
+                $link = Route('rekam.detail',$rekam->pasien_id);
+                // StatusRekamUpdate::dispatch($item->id,$rekam->no_rekam,$message,$link,$waktu);
+                event(new StatusRekamUpdate($item->id,$rekam->no_rekam,$message,$link,$waktu));
+
+            }
+        }else  if($status==4){
+            $user = User::where('role',2)->get();
+            $message = "Pembayaran a\n Pasien ".$rekam->pasien->nama.", silahkan diproses";
+            Notification::send($user, new RekamUpdateNotification($rekam,$message));
+            foreach ($user as $key => $item) {
+                $link = Route('rekam.detail',$rekam->pasien_id);
+                // StatusRekamUpdate::dispatch($item->id,$rekam->no_rekam,$message,$link,$waktu);
+                event(new StatusRekamUpdate($item->id,$rekam->no_rekam,$message,$link,$waktu));
+            }
+        }
 
         return redirect()->route('rekam.detail',$rekam->pasien_id)
                 ->with('sukses','Status Rekam medis selesai diperbaharui ');

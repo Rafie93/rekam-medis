@@ -71,9 +71,7 @@
                                    <td>{{$row->jk}}</td>
                                    <td>{{$row->no_hp}}</td>
                                    <td>{{$row->cara_bayar}}
-                                       @if ($row->cara_bayar=="Jaminan Kesehatan")
                                            <br>{{$row->no_bpjs}}
-                                       @endif
                                    </td>
                                    <td>
                                        <span class="badge badge-outline-primary">

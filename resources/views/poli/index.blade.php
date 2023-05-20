@@ -62,10 +62,10 @@
                         <thead>
                             <tr>
                                 
-                                <th><strong>No</strong></th>
-                                <th><strong>Nama Poli</strong></th>
-                                <th><strong>Status</strong></th>
-                                <th><strong>Aksi</strong></th>
+                                <th>No</th>
+                                <th>Nama Poli</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

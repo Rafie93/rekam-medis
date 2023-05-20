@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StatusRekamUpdate;
 use App\Models\Obat;
 use App\Models\Pasien;
 use App\Models\PengeluaranObat;
 use App\Models\Rekam;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\RekamUpdateNotification;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification as Notification;
 
 class PengeluaranObatController extends Controller
 {
@@ -25,6 +30,9 @@ class PengeluaranObatController extends Controller
         $rekam = Rekam::find($rekam_id);
         $pasien = Pasien::find($rekam->pasien_id);
         $pengeluaran = PengeluaranObat::where('rekam_id',$rekam_id)->whereNull('deleted_at')->get();
+        if($rekam){
+            auth()->user()->notifications->where('data.no_rekam',$rekam->no_rekam)->markAsRead();
+        }
         return view('obat.pengeluaran',compact('rekam','pasien','pengeluaran'));
     }
 
@@ -69,6 +77,15 @@ class PengeluaranObatController extends Controller
             $status = 5;
             if ($rekam->cara_bayar=="Umum/Mandiri") {
                 $status = 4;
+                $user = User::where('role',2)->get();
+                $message = "Pembayaran a\n Pasien ".$rekam->pasien->nama.", silahkan diproses";
+                Notification::send($user, new RekamUpdateNotification($rekam,$message));
+                foreach ($user as $key => $item) {
+                    $link = Route('rekam.detail',$rekam->pasien_id);
+                    $waktu = Carbon::parse($rekam->created_at)->format('d/m/Y H:i:s');
+                    event(new StatusRekamUpdate($item->id,$rekam->no_rekam,$message,$link,$waktu));
+                }
+
             }
             $rekam->update([
                 'status' => $status
