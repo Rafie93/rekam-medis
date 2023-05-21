@@ -1,8 +1,6 @@
 <p align="center">
-    <img src="https://github.com/Rafie93/rekam-medis/blob/master/public/images/logo.png" 
-    width="80">
-     <img src="https://github.com/Rafie93/rekam-medis/blob/master/public/images/logo-text.png" 
-    width="80">
+    <img src="https://github.com/Rafie93/rekam-medis/blob/master/public/images/logo.png" >
+    <img src="https://github.com/Rafie93/rekam-medis/blob/master/public/images/logo-text.png" >
 </p>
 
 
