@@ -14,6 +14,7 @@ use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PoliController;
 use App\Http\Controllers\RekamController;
 use App\Http\Controllers\RekamGigiController;
+use App\Http\Controllers\RekamPemeriksaanController;
 use App\Http\Controllers\TindakanController;
 
 Route::get('/', [AuthController::class, 'page_login'])->name('login');
@@ -84,21 +85,20 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/rekam/add', [RekamController::class, 'add'])->name('rekam.add');
     Route::get('/rekam/{id}/edit', [RekamController::class, 'edit'])->name('rekam.edit');
 
-    Route::post('/rekam/store', [RekamController::class, 'store'])->name('rekam.store');
+    Route::post('/rekam/pasie/store', [RekamController::class, 'store'])->name('rekam.store');
     Route::get('/rekam/pasien/{id}', [RekamController::class, 'detail'])->name('rekam.detail');
 
     Route::get('/rekam/{id}/delete', [RekamController::class, 'delete'])->name('rekam.delete');
-    Route::post('/rekam/{id}/update', [RekamController::class, 'update'])->name('rekam.update');
+    Route::post('/rekam/pasien/{id}/update', [RekamController::class, 'update'])->name('rekam.update');
 
     Route::get('/rekam/gigi/{id}', [RekamGigiController::class, 'index'])->name('rekam.gigi.add');
     Route::post('/rekam/gigi/{id}/store', [RekamGigiController::class, 'store'])->name('rekam.gigi.store');
     Route::get('/rekam/gigi/{id}/delete', [RekamGigiController::class, 'delete'])->name('rekam.gigi.delete');
     Route::get('/rekam/gigi/{id}/odontogram', [RekamGigiController::class, 'odontogram'])->name('rekam.gigi.odontogram');
 
-
-    Route::post('/rekam/pemeriksaan/update', [RekamController::class, 'pemeriksaan_update'])->name('pemeriksaan.update');
-    Route::post('/rekam/tindakan/update', [RekamController::class, 'tindakan_update'])->name('tindakan.update');
-    Route::post('/rekam/diagnosa/update', [RekamController::class, 'diagnosa_update'])->name('diagnosa.update');
+    Route::post('/rekam/pemeriksaan/update', [RekamPemeriksaanController::class, 'pemeriksaan'])->name('pemeriksaan.update');
+    Route::post('/rekam/tindakan/update', [RekamPemeriksaanController::class, 'tindakan'])->name('tindakan.update');
+    Route::post('/rekam/diagnosa/update', [RekamPemeriksaanController::class, 'diagnosa'])->name('diagnosa.update');
 
     Route::get('/rekam/status/{id}/{status}/update', [RekamController::class, 'rekam_status'])->name('rekam.status');
 
