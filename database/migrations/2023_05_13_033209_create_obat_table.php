@@ -18,13 +18,12 @@ class CreateObatTable extends Migration
             $table->string('kd_obat')->nullable();
             $table->string('nama');
             $table->string('satuan');
-            $table->date('tgl_masuk');
-            $table->date('tgl_keluar');
-            $table->integer('jumlah');
+            $table->integer('stock');
             $table->string('foto')->nullable();
             $table->integer('harga')->default(0);
             $table->integer('is_bpjs')->default(1);
             $table->timestamps();
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 

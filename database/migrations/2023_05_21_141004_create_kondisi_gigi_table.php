@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePoliTable extends Migration
+class CreateKondisiGigiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePoliTable extends Migration
      */
     public function up()
     {
-        Schema::create('poli', function (Blueprint $table) {
+        Schema::create('kondisi_gigi', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->integer('status')->default(1);
+            $table->string('kode');
+            $table->string('nama')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreatePoliTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('poli');
+        Schema::dropIfExists('kondisi_gigi');
     }
 }

@@ -15,11 +15,12 @@ class CreateDokterTable extends Migration
     {
         Schema::create('dokter', function (Blueprint $table) {
             $table->id();
-            $table->string('nip');
+            $table->string('nip')->nullable();
             $table->string('nama');
             $table->string('no_hp');
-            $table->string('alamat');
+            $table->string('alamat')->nullable();
             $table->string('poli');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

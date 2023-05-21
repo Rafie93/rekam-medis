@@ -15,10 +15,16 @@ class CreatePengeluaranObatTable extends Migration
     {
         Schema::create('pengeluaran_obat', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('date');
-            $table->integer('rekam_id')->default(0);
-            $table->integer('total_bayar')->default(0);
+            $table->integer('rekam_id');
+            $table->integer('pasien_id');
+            $table->integer('obat_id');
+            $table->integer('jumlah');
+            $table->string('satuan')->nullable();
+            $table->integer('harga')->default(0);
+            $table->integer('subtotal')->default(0);
+            $table->string('keterangan')->nullabl();
             $table->timestamps();
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 

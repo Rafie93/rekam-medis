@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             3 => Dokter
             4 => Petugas Obat
             ");
+            $table->integer('status')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

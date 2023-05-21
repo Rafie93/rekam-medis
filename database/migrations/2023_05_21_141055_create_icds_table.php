@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePoliTable extends Migration
+class CreateIcdsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePoliTable extends Migration
      */
     public function up()
     {
-        Schema::create('poli', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->integer('status')->default(1);
+        Schema::create('icds', function (Blueprint $table) {
+            $table->string('code')->primary();
+            $table->string('name_id')->nullable();
+            $table->string('name_en')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreatePoliTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('poli');
+        Schema::dropIfExists('icds');
     }
 }
