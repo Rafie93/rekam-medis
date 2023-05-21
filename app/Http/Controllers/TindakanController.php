@@ -38,7 +38,7 @@ class TindakanController extends Controller
             'nama' => 'required',
             'poli' => 'required'
         ]);
-        $data = Tindakan::where('id',$id);
+        $data = Tindakan::find($id);
         $data->update($request->all());
         return redirect()->route('tindakan')->with('sukses','Data berhasil diperbaharui');
     }

@@ -110,8 +110,19 @@ jQuery(function(){
 	//View Models
 	function DienteModel(id, x, y){
 		var self = this;
+		var lbl = id;
+		$.get(
+			"{{ Route('odontogram',9) }}",
+			{
+				
+			},
+			function(data) {
+				$.each(data.data, function(index, value) {
+				})
 
-		self.id = id;	
+			}
+		);
+		self.id = lbl;	
 		self.x = x;
 		self.y = y;		
 	};

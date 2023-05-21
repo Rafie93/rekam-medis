@@ -65,8 +65,7 @@ class Rekam extends Model
             break;
             case 3:
                 return '<span class="badge badge-warning light" style="width:100px">
-                            <i class="fa fa-circle text-light mr-1"></i>
-                            Menunggu Obat
+                           Di Apotek
                         </span>';
             break;
             case 4:

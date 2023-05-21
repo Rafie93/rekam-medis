@@ -3,10 +3,9 @@
 <div class="mr-auto">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{Route('rekam.detail',$rekam->pasien_id)}}">Rekam Medis</a></li>
-        <li class="breadcrumb-item active"><a href="#">Tambah Rekam Gigi {{$rekam->pasien->nama}}</a></li>
+        <li class="breadcrumb-item active"><a href="#">Odontogram Gigi {{$rekam->pasien->nama}}</a></li>
     </ol>
 </div>
-@include('rekam.partial.modal-diagnosa-gigi')
 
 <div class="row">
     <div class="col-xl-12">
@@ -15,28 +14,7 @@
                 <div class="basic-form">
                     <table class="table" style="width: 100%">
                     <tbody>
-                        {{-- <tr>
-                            <td>
-                                <div id="tratamiento">
-                                    <h2>Tratamiento</h2>
-                                    <select 
-                                      data-bind=" options: tratamientosPosibles, 
-                                                  value: tratamientoSeleccionado, 
-                                                  optionsText: function(item){ return item.nombre; },
-                                                  optionsCaption: 'Seleccione un tratamiento...'">
-                                    </select>
-                                    <ul data-bind="foreach: tratamientosAplicados">
-                                      <li>
-                                        P<span data-bind="text: diente.id"></span><span data-bind="text: cara"></span>
-                                        -            
-                                        <span data-bind="text: tratamiento.nombre"></span>
-                                        | 
-                                        <a href="#" data-bind="click: $parent.quitarTratamiento">Eliminar</a>
-                                      </li>
-                                    </ul>
-                                  </div>
-                            </td>
-                        </tr> --}}
+                       
                         <tr>
                             <td align="center">
                                 <div id="odontograma"></div>
@@ -44,142 +22,52 @@
                         </tr>
                     </tbody>
                     </table>
-                    <form action="{{Route('rekam.gigi.store',$rekam->id)}}" method="POST">
-                        {{ csrf_field() }}
+                  
                         <hr>
                         <div class="row">
                             <div class="card-body pt-3">
                                 <div class="row">
-                                    @if ($rekam->status <= 2)
-                                        <div class="col-md-4">
-                                                
-                                            <div class="form-group">
-                                                <label class="text-black font-w500">Element Gigi*</label>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                            <select name="element_gigi" id="element_gigi" class="form-control">
-                                                                @php
-                                                                    for ($i=11; $i < 19; $i++) { 
-                                                                        echo "<option value='".$i."'>".$i."</option>";
-                                                                    }
-                                                                    for ($i=21; $i < 29; $i++) { 
-                                                                        echo "<option value='".$i."'>".$i."</option>";
-                                                                    }
-                                                                    for ($i=31; $i < 39; $i++) { 
-                                                                        echo "<option value='".$i."'>".$i."</option>";
-                                                                    }
-                                                                    for ($i=41; $i < 49; $i++) { 
-                                                                        echo "<option value='".$i."'>".$i."</option>";
-                                                                    }
-                                                                    for ($i=48; $i < 53; $i++) { 
-                                                                        echo "<option value='".$i."'>".$i."</option>";
-                                                                    }
-                                                                    for ($i=61; $i < 66; $i++) { 
-                                                                        echo "<option value='".$i."'>".$i."</option>";
-                                                                    }
-                                                                    for ($i=71; $i < 76; $i++) { 
-                                                                        echo "<option value='".$i."'>".$i."</option>";
-                                                                    }
-                                                                    for ($i=78; $i < 83; $i++) { 
-                                                                        echo "<option value='".$i."'>".$i."</option>";
-                                                                    }
-                                                                @endphp
-                                                            </select>
-                                                        
-                                                    </div>
-                                                
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="text-black font-w500">Kondisi Gigi* </label>
-                                                <select name="pemeriksaan" id="kondisi_gigi" class="form-control">
-                                                    @foreach ($kondisi_gigi as $item)
-                                                        <option value="{{$item->kode}}">{{$item->kode}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="text-black font-w500">Diagnosa*</label>
-                                                <div class="input-group transparent-append">
-                                                    <input type="text" id="diagnosa" class="form-control"
-                                                    data-toggle="modal" data-target="#addDiagnosa" readonly
-                                                    name="diagnosa" placeholder="">
-                                                    <div class="input-group-append show-pass"  data-toggle="modal"
-                                                    data-target="#addDiagnosa">
-                                                        <span class="input-group-text"> 
-                                                            <a href="javascript:void(0)"  data-toggle="modal"
-                                                            data-target="#modalObat"><i class="fa fa-search"></i></a>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="text-black font-w500">Tindakan/Prosedur* </label>
-                                                <select name="tindakan" id="tindakan" class="form-control">
-                                                    @foreach ($tindakan as $item)
-                                                        <option value="{{$item->kode}}">{{$item->nama}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        
-                                        
-                                            <div class="form-group">
-                                                <button type="button" onclick="addRekam()" class="btn btn-info">+ Tambah</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    @endif
-                                    <div class="col-md-{{$rekam->status <= 2 ? '8' : '12'}}">
+                                   
+                                    <div class="col-md-12">
                                         <div class="table-responsive card-table">
-                                            <h5>Rincian</h5>
+                                            <h5>Riwayat Pemeriksaan Gigi</h5>
                                                 <table  id="table-tindakan"
                                                 class="table table-responsive-md table-bordered">
                                                 <thead>
                                                     <tr>
+                                                        <th>Tanggal</th>
+                                                        <th>Keluhan</th>
                                                         <th>Elemen Gigi</th>
                                                         <th>Kondisi Gigi</th>
                                                         <th>Diagnosa</th>
                                                         <th>Tindakan</th>
-                                                        <th><strong>#</strong></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($pem_gigi as $row)
+                                                    @foreach ($all_riwayat_gigi as $row)
                                                         <tr>
+                                                            <td>{{$row->rekam->tgl_rekam}}</td>
+                                                            <td>{{$row->rekam->keluhan}}</td>
                                                             <td>{{$row->elemen_gigi}}</td>
                                                             <td>{{$row->pemeriksaan}}</td>
                                                             <td>{{$row->diagnosa}}</td>
                                                             <td>{{$row->tindakan}}</td>
-                                                            <td> @if ($rekam->status<=2)
-                                                                <a href="#" class="btn btn-danger shadow btn-xs sharp delete" 
-                                                                    r-link="{{Route('rekam.gigi.delete',$row->id)}}"
-                                                                    r-name="{{$row->elemen_gigi}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
-                                                                @endif
-                                                            </td>
+                                                           
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
                                                 
                                             </table>
-                                           @if ($rekam->status<=2)
-                                                <div class="form-group">
-                                                    <button type="submit" class="btn btn-primary">SIMPAN</button>
-                                                </div>
-                                           @endif
-                                           {{-- </form> --}}
+                                           
                                         </div>
                                     </div>
                                 </div>
                                
                             </div>
                         </div>
-                        {{-- <hr>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">SIMPAN</button>
-                        </div> --}}
+                      
 
                         
-                    </form>
                 </div>
             </div>
         </div>

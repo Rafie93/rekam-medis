@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\StatusRekamUpdate;
 use App\Models\Dokter;
+use App\Models\KondisiGigi;
 use App\Models\Pasien;
 use App\Models\PengeluaranObat;
 use App\Models\Poli;
@@ -63,40 +64,7 @@ class RekamController extends Controller
         return view('rekam.edit',compact('data','poli'));
     }
 
-    public function rekam_gigi(Request $request,$rekamId)
-    {
-        $rekam = Rekam::find($rekamId);
-        $tindakan = Tindakan::where('poli','Poli Gigi')->get();
-        return view('rekam.rekam-gigi',compact('rekam','tindakan'));
-    }
-
-    public function rekam_gigi_store(Request $request,$rekamId){
-        $rekam = Rekam::find($rekamId);
-        // dd($request->all());
-        try {
-            DB::beginTransaction();
-            if ($request->element_gigi) {
-                foreach ($request->element_gigi as $i => $elementId) {
-                    RekamGigi::create([
-                        'rekam_id' => $rekamId,
-                        'pasien_id' => $rekam->pasien_id,
-                        'elemen_gigi'  => $elementId,
-                        'diagnosa' => $request->diagnosa[$i],
-                        'tindakan' => $request->tindakan[$i],
-                        'status' =>1,
-                    ]);
-                }
-            }
-            DB::commit();
-            
-            return redirect()->route('rekam.detail',$rekam->pasien_id)->with('sukses','Rekam Gigi Berhasil ditambahkan');
-
-        } catch (\PDOException $e) {
-            DB::rollback();
-            return redirect()->route('rekam.gigi.add',$rekamId)->with('gagal','Data Gagal ditambahkan '.$e);
-
-        }   
-    }
+   
     public function detail(Request $request,$pasien_id)
     {
         $pasien = Pasien::find($pasien_id);

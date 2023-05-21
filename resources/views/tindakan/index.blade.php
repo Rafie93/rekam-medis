@@ -114,8 +114,8 @@
                                           
 
                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#edit{{$row->id}}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-                                            <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-link="{{Route('tindakan.delete',$row->id)}}"
-                                             r-name="{{$row->nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
+                                            {{-- <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-link="{{Route('tindakan.delete',$row->id)}}"
+                                             r-name="{{$row->nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a> --}}
 
                                             <div class="modal fade" id="edit{{$row->id}}">
                                                 <div class="modal-dialog" role="document">
@@ -126,11 +126,11 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="{{Route('tindakan.update',$row->id)}}" method="POST">
+                                                            <form action="{{Route('master.tindakan.update',$row->id)}}" method="POST">
                                                                 {{ csrf_field() }}
                                                                 <div class="form-group">
                                                                     <label class="text-black font-w500">Kode</label>
-                                                                    <input type="text" name="kode" value="{{$row->nama}}" class="form-control">
+                                                                    <input type="text" name="kode" value="{{$row->kode}}" readonly class="form-control">
                                                                     @error('kode')
                                                                     <div class="invalid-feedback animated fadeInUp"
                                                                     style="display: block;">{{$message}}</div>

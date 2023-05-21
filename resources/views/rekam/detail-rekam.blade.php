@@ -34,7 +34,12 @@
                                     <span class="fs-14">{{$pasien->alamat_lengkap}}</span>
                                     <span class="fs-14">{{$pasien->keluhan.", ".$pasien->kecamatan.", ".$pasien->kabupaten.", ".$pasien->kewarganegaraan}}</span>
                                     {{-- <textarea name="analysis" class="form-control" id="editor" cols="30" rows="10"></textarea> --}}
-                                      
+                                    <br>
+                                    @if ($pasien->isRekamGigi())
+                                        <a href="{{Route('rekam.gigi.odontogram',$pasien->id)}}" style="width: 120px"
+                                            class="btn-rounded btn-info btn-xs "><i class="fa fa-eye"></i> Odontogram</a>
+                                    @endif
+                                    
                                 </div>
                             </div>
                          
@@ -174,7 +179,7 @@
                                             <td>
                                                 @if ($row->poli=="Poli Gigi")
                                                     @foreach ($row->gigi() as $item)
-                                                        <li>Gigi {{$item->elemen_gigi}}</li>
+                                                        <li>Gigi {{$item->elemen_gigi}} : {{$item->pemeriksaan}}</li>
                                                     @endforeach
                                                 @else 
                                                     {!! $row->pemeriksaan !!}</td>

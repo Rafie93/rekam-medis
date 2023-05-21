@@ -40,9 +40,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Tempat Lahir*</label>
+                            <label class="col-sm-2 col-form-label">Tempat Lahir</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" name="tmp_lahir" required
+                                <input type="text" class="form-control" name="tmp_lahir"
                                  value="{{old('tmp_lahir') ? old('tmp_lahir') : $data->tmp_lahir}}">
                                 @error('tmp_lahir')
                                 <div class="invalid-feedback animated fadeInUp"
@@ -51,7 +51,7 @@
                             </div>
                             <label class="col-sm-2 col-form-label">Tanggal Lahir</label>
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" name="tgl_lahir" required 
+                                <input type="date" class="form-control" name="tgl_lahir" 
                                 value="{{old('tgl_lahir') ? old('tgl_lahir') : $data->tgl_lahir}}">
                                 @error('tgl_lahir')
                                 <div class="invalid-feedback animated fadeInUp"
@@ -81,7 +81,7 @@
                             <label class="col-sm-2 col-form-label">Status Menikah</label>
                             <div class="col-sm-4">
                                 
-                                <select name="status_menikah" class="form-control" required>
+                                <select name="status_menikah" class="form-control">
                                     <option value="">--Pilih--</option>
                                     <option value="Belum Menikah" {{$data->status_menikah =="Belum Menikah" ? 'selected' : ''}}>Belum Menikah</option>
                                     <option value="Menikah" {{$data->status_menikah =="Menikah" ? 'selected' : ''}}>Menikah</option>
@@ -96,9 +96,10 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Agama*</label>
+                            <label class="col-sm-2 col-form-label">Agama</label>
                             <div class="col-sm-2">
                                 <select name="agama" class="form-control">
+                                    <option value=""></option>
                                     <option value="Islam" {{$data->agama =="Islam" ? 'selected' : ''}}>Islam</option>
                                     <option value="Kristen" {{$data->agama =="Kristen" ? 'selected' : ''}}>Kristen</option>
                                     <option value="Katholik" {{$data->agama =="Katholik" ? 'selected' : ''}}>Katholik</option>
@@ -111,9 +112,9 @@
                                 style="display: block;">{{$message}}</div>
                                 @enderror
                             </div>
-                            <label class="col-sm-2 col-form-label">Pendidikan*</label>
+                            <label class="col-sm-2 col-form-label">Pendidikan</label>
                             <div class="col-sm-2">
-                                <select name="pendidikan" class="form-control" required>
+                                <select name="pendidikan" class="form-control">
                                     <option value="">--Pilih--</option>
                                     <option value="SD" {{$data->pendidikan =="SD" ? 'selected' : ''}}>SD</option>
                                     <option value="SMP" {{$data->pendidikan =="SMP" ? 'selected' : ''}}>SMP</option>
@@ -245,9 +246,10 @@
                                 style="display: block;">{{$message}}</div>
                                 @enderror
                             </div>
-                            <label class="col-sm-2 col-form-label" id="no_bpjs_label">No. BPJS</label>
+                            <label class="col-sm-2 col-form-label" id="no_bpjs_label">No. BPJS/KTP</label>
                             <div class="col-sm-4">
-                                <input type="number" class="form-control" id="no_bpjs" name="no_bpjs" value="{{old('no_bpjs') ? old('no_bpjs') : $data->no_bpjs}}">
+                                <input type="number" class="form-control" id="no_bpjs"
+                                 name="no_bpjs" value="{{old('no_bpjs') ? old('no_bpjs') : $data->no_bpjs}}">
                                 @error('no_bpjs')
                                 <div class="invalid-feedback animated fadeInUp"
                                 style="display: block;">{{$message}}</div>

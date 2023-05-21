@@ -151,23 +151,34 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-xxl-12  col-md-6 height415 dz-scroll" id="appointment-schedule">
-                                    @foreach ($query->rekam_day() as $item)
-                                        <div class="d-flex pb-3 border-bottom mb-3 align-items-end">
-                                            <div class="mr-auto">
-                                                <p class="text-black font-w600 mb-2"><a href="{{Route('rekam.detail',$item->pasien_id)}}">{{$item->pasien->nama}}</a></p>
-                                                <ul>
-                                                    <li><i class="las la-clock"></i>Time : {{$item->created_at->diffForHumans()}}</li>
-                                                    <li><i class="las la-clock"></i>Status : {!!$item->status_display()!!}</li>
-                                                    <li><i class="las la-user"></i>Keluhan : {{$item->keluhan}}</li>
-                                                    <li><i class="las la-user"></i>Doktor : {{$item->dokter->nama}}</li>
-                                                </ul>
+                                    @if ($query->rekam_day()->count() > 0)
+                                            @foreach ($query->rekam_day() as $item)
+                                            <div class="d-flex pb-3 border-bottom mb-3 align-items-end">
+                                                <div class="mr-auto">
+                                                    <p class="text-black font-w600 mb-2"><a href="{{Route('rekam.detail',$item->pasien_id)}}">{{$item->pasien->nama}}</a></p>
+                                                    <ul>
+                                                        <li><i class="las la-clock"></i>Time : {{$item->created_at->diffForHumans()}}</li>
+                                                        <li><i class="las la-clock"></i>Status : {!!$item->status_display()!!}</li>
+                                                        <li><i class="las la-user"></i>Keluhan : {{$item->keluhan}}</li>
+                                                        <li><i class="las la-user"></i>Doktor : {{$item->dokter->nama}}</li>
+                                                    </ul>
+                                                </div>
+                                                <a href="{{Route('rekam.detail',$item->pasien_id)}}" class="text-success mr-3 mb-2">
+                                                    <i class="las la-check-circle scale5"></i>
+                                                </a>
+                                                
                                             </div>
-                                            <a href="{{Route('rekam.detail',$item->pasien_id)}}" class="text-success mr-3 mb-2">
-                                                <i class="las la-check-circle scale5"></i>
-                                            </a>
-                                            
+                                        @endforeach
+                                    @else 
+                                        <div class="alert alert-info alert-dismissible fade show">
+                                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>	
+                                            <strong>Info!</strong> Tidak Ada List
+                                            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close"><span><i class="mdi mdi-close"></i></span>
+                                            </button>
                                         </div>
-                                    @endforeach
+                                    @endif
+                                   
+                                   
                                 </div>
                             </div>
                         </div>
@@ -223,11 +234,13 @@
                                         </div>
                                        
                                     </div>
-                                    <div class="row align-items-center">
+                                    {{-- <div class="row align-items-center">
                                         <div class="col-xl-6 col-xxl-12 col-md-6">
                                             <div id="radialBar"></div>
                                         </div>
                                         <div class="col-xl-6 col-xxl-12 col-md-6">
+
+                                          
                                             <div class="d-flex mb-4 align-items-center">
                                                 <span class="mr-auto pr-3 font-w500 fs-30 text-black">
                                                     <svg class="mr-3" width="8" height="30" viewBox="0 0 8 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -256,7 +269,7 @@
                                                 <span>In Treatment</span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="tab-pane fade" id="Weekly" role="tabpanel">
                                     <div class="d-flex flex-wrap align-items-center px-4  bg-light">
@@ -271,7 +284,7 @@
                                         </div>
                                         
                                     </div>
-                                    <div class="row align-items-center">
+                                    {{-- <div class="row align-items-center">
                                         <div class="col-xl-6 col-xxl-12 col-md-6">
                                             <div id="radialBar2"></div>
                                         </div>
@@ -304,7 +317,7 @@
                                                 <span>In Treatment</span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="tab-pane fade" id="Monthly" role="tabpanel">
                                     <div class="d-flex flex-wrap align-items-center px-4  bg-light">
@@ -319,7 +332,7 @@
                                         </div>
                                         
                                     </div>
-                                    <div class="row align-items-center">
+                                    {{-- <div class="row align-items-center">
                                         <div class="col-xl-6 col-xxl-12 col-md-6">
                                             <div id="radialBar3"></div>
                                         </div>
@@ -352,59 +365,89 @@
                                                 <span>In Treatment</span>
                                             </div>
                                         </div>
+                                    </div> --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="col-xl-12">	
+                    <div class="card " >
+                        <div class="card-header d-sm-flex d-block pb-0 border-0 ">
+                            <div class="mr-auto pr-3">
+                                <h4 class="text-black fs-20 mb-0">Top Diagnosa </h4>
+                            </div>
+                            <div class="card-action card-tabs mt-3 mt-sm-0 mt-3 mb-sm-0 mb-3 mt-sm-0">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    
+                                    
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#MonthlyDiagnosa" role="tab">
+                                            Monthly
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#YearlyDiagnosa" role="tab">
+                                            Yearly
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                              
+                                <div class="tab-pane fade" id="YearlyDiagnosa" role="tabpanel">
+                                    
+                                    @foreach ($query->diagnosaYearly() as $item)
+                                        <div class="d-flex mb-4 align-items-center">
+                                            <span class="mr-auto pr-3 font-w500 fs-30 text-black">
+                                                <svg class="mr-3" width="8" height="30" viewBox="0 0 8 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <rect width="7.65957" height="30" fill="#BDA25C"/>
+                                                </svg>
+                                                {{$item->total}}
+                                            </span>
+                                            <span>{{$item->diagnosa." "}}</span>
+                                            <span style="width: 300px" class="font-w300">{{$item->name_id}}</span>
+
+                                        </div>
+
+                                    @endforeach
+                                    
+                                </div>
+                                <div class="tab-pane fade show active" id="MonthlyDiagnosa" role="tabpanel">
+                                    
+                                    <div class="row align-items-center">
+                                        <div class="col-xl-6 col-xxl-12 col-md-6">
+                                            <div id="radialBar3"></div>
+                                        </div>
+                                        <div class="col-xl-6 col-xxl-12 col-md-6">
+                                            @foreach ($query->diagnosaBulanan() as $item)
+                                                <div class="d-flex mb-4 align-items-center">
+                                                    <span class="mr-auto pr-3 font-w500 fs-30 text-black">
+                                                        <svg class="mr-3" width="8" height="30" viewBox="0 0 8 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <rect width="7.65957" height="30" fill="#BDA25C"/>
+                                                        </svg>
+                                                        {{$item->total}}
+                                                    </span>
+                                                    <span>{{$item->diagnosa." "}}</span>
+                                                    <span style="width: 300px" class="font-w300">{{$item->name_id}}</span>
+
+                                                </div>
+
+                                            @endforeach
+                                            
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {{-- <div class="col-xl-6 col-xxl-12 col-md-6">	
-                    <div class="card">
-                        <div class="card-header d-block border-0 pb-0">
-                            <div class="d-flex mb-3">
-                                <h3 class="fs-20 text-black mb-0">Patient Overview</h3>
-                                <div class="dropdown ml-auto">
-                                    <div class="btn-link" data-toggle="dropdown">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13.0001 12C13.0001 11.4477 12.5523 11 12.0001 11C11.4478 11 11.0001 11.4477 11.0001 12C11.0001 12.5523 11.4478 13 12.0001 13C12.5523 13 13.0001 12.5523 13.0001 12Z" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M6.00006 12C6.00006 11.4477 5.55235 11 5.00006 11C4.44778 11 4.00006 11.4477 4.00006 12C4.00006 12.5523 4.44778 13 5.00006 13C5.55235 13 6.00006 12.5523 6.00006 12Z" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M20.0001 12C20.0001 11.4477 19.5523 11 19.0001 11C18.4478 11 18.0001 11.4477 18.0001 12C18.0001 12.5523 18.4478 13 19.0001 13C19.5523 13 20.0001 12.5523 20.0001 12Z" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </div>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item text-black" href="javascript:;">Info</a>
-                                        <a class="dropdown-item text-black" href="javascript:;">Details</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="d-flex mr-auto align-items-center">
-                                    <svg width="12" height="54" viewBox="0 0 12 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="12" height="54" fill="#BDA25C"/>
-                                    </svg>
-                                    <div class="ml-2">
-                                        <p class="mb-1">New</p>
-                                        <span class="text-black font-w500">451</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <svg width="12" height="54" viewBox="0 0 12 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="12" height="54" fill="#209F84"/>
-                                    </svg>
-                                    <div class="ml-2">
-                                        <p class="mb-1">Recovered</p>
-                                        <span class="text-black font-w500">623</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body p-0">
-                            <div id="chartTimeline"></div>
-                        </div>
-                    </div>
-                </div>
-               
-                 --}}
             </div>
         </div>
        

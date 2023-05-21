@@ -74,10 +74,7 @@
                                            <br>{{$row->no_bpjs}}
                                    </td>
                                    <td>
-                                       <span class="badge badge-outline-primary">
-                                           <i class="fa fa-circle text-primary mr-1"></i>
-                                           New Patient
-                                       </span>
+                                      {!! $row->statusPasien() !!}
                                    </td>
                                 </tr>
                             @endforeach

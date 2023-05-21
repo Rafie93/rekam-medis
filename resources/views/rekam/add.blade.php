@@ -69,7 +69,7 @@
                                 name="pasien_id" value="{{old('pasien_id')}}">
                                 <div class="input-group transparent-append">
                                     <input type="text" id="pasien_nama" class="form-control"
-                                      data-toggle="modal" data-target="#modalPasien" value="{{old('pasien_nama')}}"
+                                      data-toggle="modal" data-target="#modalPasien" value="{{old('pasien_nama') ? old('pasien_nama') : ''}}"
                                      name="pasien_nama" placeholder="Pilih Pasien..">
                                     <div class="input-group-append show-pass"  data-toggle="modal" data-target="#modalPasien">
                                         <span class="input-group-text"> 
@@ -190,7 +190,7 @@
                 {data: 'tgl_lahir', name: 'tgl_lahir'},
                 {data: 'no_hp', name: 'no_hp'},
                 {data: 'cara_bayar', name: 'cara_bayar'},
-                {data: 'no_bpjs', name: 'no_bpjs'}              
+                {data: 'no_bpjs', name: 'no_bpjs'}  ,
             ]
         });
         

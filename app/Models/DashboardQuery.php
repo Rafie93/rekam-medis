@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
+
 class DashboardQuery 
 {
     public function totalObat()
@@ -95,6 +97,51 @@ class DashboardQuery
     {
         return Dokter::where('status',1)->count();
     }
+
+    public function diagnosaBulanan(){
+      $filterBulan = date('Y-m');
+      $data=  DB::select('
+            select aa.*,ic.name_id from(
+            select diagnosa, count(diagnosa) as total
+            from (
+           
+            select diagnosa
+            from rekam
+            where diagnosa is not null
+            and tgl_rekam LIKE "%'.$filterBulan.'%"
+
+            union all
+            select diagnosa
+            from rekam_gigi 
+            where created_at LIKE "%'.$filterBulan.'%"
+        ) sc
+        group by diagnosa)aa 
+        left join icds ic on ic.code = aa.diagnosa
+        order by total desc limit 10');
+        return $data;
+    }
+    public function diagnosaYearly(){
+        $filter = date('Y-');
+        $data=  DB::select('
+              select aa.*,ic.name_id from(
+              select diagnosa, count(diagnosa) as total
+              from (
+             
+              select diagnosa
+              from rekam
+              where diagnosa is not null
+              and tgl_rekam LIKE "%'.$filter.'%"
+  
+              union all
+              select diagnosa
+              from rekam_gigi 
+              where created_at LIKE "%'.$filter.'%"
+          ) sc
+          group by diagnosa)aa 
+          left join icds ic on ic.code = aa.diagnosa
+          order by total desc limit 10');
+          return $data;
+      }
     function rekam_day(){
         $user = auth()->user();
         $role = $user->role_display();
