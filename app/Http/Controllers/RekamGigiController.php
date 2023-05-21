@@ -13,7 +13,9 @@ class RekamGigiController extends Controller
 {
     public function odontogram(Request $request, $pasienId)
     {
-        $rekam = Rekam::orderBy('id','desc')->where('pasien_id',$pasienId)->first();
+        $rekam = Rekam::orderBy('id','desc')
+                        ->where('poli','Poli Gigi')
+                        ->where('pasien_id',$pasienId)->first();
         if(!$rekam){
             return redirect()->route('rekam.detail',$pasienId)
             ->with('gagal','Odontogram tidak ditemukan');
