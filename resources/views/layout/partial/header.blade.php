@@ -4,12 +4,12 @@
             <div class="collapse navbar-collapse justify-content-between">
                 <div class="header-left">
                     <div class="dashboard_bar">
-                        <div class="input-group search-area d-lg-inline-flex d-none">
+                        {{-- <div class="input-group search-area d-lg-inline-flex d-none">
                             <input type="text" class="form-control" placeholder="Search here...">
                             <div class="input-group-append">
                                 <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <ul class="navbar-nav header-right">
