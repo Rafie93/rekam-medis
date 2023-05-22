@@ -43,8 +43,31 @@
                                     <td>{{  $key+1 }}</td>
                                     <td>{{$row->tgl_rekam}}</td>
                                     <td>{{$row->pasien->nama}}</td>
-                                    <td>{{$row->diagnosa}}</td>
-                                    <td>{!! $row->tindakan !!}</td>
+                                    <td>{{$row->diagnosa}}
+                                        @if ($row->poli=="Poli Gigi")
+                                            @foreach ($row->gigi() as $item)
+                                                <li>{{$item->diagnosa.", ".$item->diagnosis->name_id}}</li>
+                                            @endforeach
+                                        @else 
+                                            {{$row->diagnosa}}
+                                            @if ($row->diagnosa!=null)
+                                                <br/>{{$row->diagnosis->name_id}}
+                                            @endif
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($row->poli=="Poli Gigi")
+                                            @if ($row->resep_obat!=null)
+                                                <strong>Resep Obat :</strong> {{$row->resep_obat}}
+                                                <br><br>
+                                            @endif
+                                            @foreach ($row->gigi() as $item)
+                                                <li>{{$item->tindak->nama}}</li>
+                                            @endforeach
+                                        @else 
+                                            {!! $row->tindakan !!}</td>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="d-flex">
                                             <a href="{{Route('obat.pengeluaran',$row->id)}}" class="btn btn-primary shadow btn-xs">

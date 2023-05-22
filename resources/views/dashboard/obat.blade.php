@@ -120,7 +120,7 @@
                                                         <ul>
                                                             <li><i class="las la-clock"></i>Time : {{$item->updated_at->diffForHumans()}}</li>
                                                             <li><i class="las la-clock"></i>Status : {!!$item->status_display()!!}</li>
-                                                            <li><i class="las la-user"></i>Tindakan {!!$item->tindakan!!}</li>
+                                                            <li><i class="las la-user"></i>Resep Obat : {!!$item->resep_obat!!}</li>
                                                         </ul>
                                                     </div>
                                                     <a href="{{Route('obat.pengeluaran',$item->id)}}" 

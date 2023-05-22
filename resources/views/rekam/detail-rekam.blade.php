@@ -6,8 +6,8 @@
 @include('rekam.partial.modal-tindakan')
 {{-- MODAL Diagnosa --}}
 @include('rekam.partial.modal-diagnosa')
-
-{{-- @include('rekam.partial.modal-rekam-gigi') --}}
+{{-- MODAL OBAT --}}
+@include('rekam.partial.modal-resep-obat')
 
 {{-- DATA --}}
     <div class="row">   
@@ -237,6 +237,16 @@
                                                     || auth()->user()->role_display() == "Admin")
                                                         <a href="{{Route('rekam.gigi.add',$row->id)}}" style="width: 120px"
                                                         class="btn-rounded btn-info btn-xs "><i class="fa fa-pencil"></i> Rekam</a>
+
+                                                        @if ($row->gigi()->count() > 0)
+                                                            <a href="javascript:void(0)" data-toggle="modal" 
+                                                            data-target="#addResep"
+                                                            data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
+                                                            data-resep="{{$row->resep_obat}}" style="width: 120px"
+                                                            class="btn-rounded btn-success btn-xs addResep">
+                                                            <i class="fa fa-pencil"></i>Resep Obat</a>
+                                                        @endif
+
                                                     @endif
                                                 @endif 
                                                 
@@ -302,6 +312,17 @@
     });
 
     CKEDITOR.replace('editor2', {
+        height  : '250px',
+        filebrowserUploadUrl: "{{route('rekam.upload', ['_token' => csrf_token() ])}}",
+        filebrowserUploadMethod: 'form',
+        toolbarGroups: [
+		{ name: 'document',	   groups: [ 'mode', 'document' ] },		
+ 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },			
+        { name: 'insert', groups: [ 'Image'] },
+	]
+    });
+
+    CKEDITOR.replace('editor3', {
         height  : '250px',
         filebrowserUploadUrl: "{{route('rekam.upload', ['_token' => csrf_token() ])}}",
         filebrowserUploadMethod: 'form',
@@ -388,6 +409,14 @@
         var diagnosa = $(this).data('diagnosa');
         $(".modal-body #rekamId").val( rekamId );
         CKEDITOR.instances.editor.setData( diagnosa );
+
+    });
+
+    $(document).on("click", ".addResep", function () {
+        var rekamId = $(this).data('id');
+        var resep = $(this).data('resep');
+        $(".modal-body #rekamId").val( rekamId );
+        CKEDITOR.instances.editor3.setData( resep );
 
     });
 </script>

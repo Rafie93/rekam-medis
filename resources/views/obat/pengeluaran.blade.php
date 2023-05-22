@@ -91,7 +91,9 @@
                                     <h4 class="fs-14 font-w600 mb-1">{{$pasien->agama}}</h4>
                                     <h4 class="fs-14 font-w600 mb-1">{{$pasien->jk.", ".$pasien->status_menikah}}</h4>
                                     <span class="fs-14">{{$pasien->alamat_lengkap}}</span>
-                                    <span class="fs-14">{{$pasien->keluhan.", ".$pasien->kecamatan.", ".$pasien->kabupaten.", ".$pasien->kewarganegaraan}}</span>
+                                    <span class="fs-14">{{$pasien->kelurahan.", ".$pasien->kecamatan.", ".$pasien->kabupaten.", ".$pasien->kewarganegaraan}}</span>
+                                    <h4 class="fs-14 font-w600 mb-1">Alergi : {{$pasien->alergi}}</h4>
+
                                     {{-- <textarea name="analysis" class="form-control" id="editor" cols="30" rows="10"></textarea> --}}
                                       
                                 </div>
@@ -134,16 +136,27 @@
                                             Diagnosa
                                         </span>
                                         <div class="col-8 p-0">
-                                            <p>{{ $rekam->diagnosa." ".$rekam->diagnosis->name_id}}
-                                            </p>
+                                            @if ($rekam->poli == "Poli Gigi")
+                                                    @foreach ($rekam->gigi() as $item)
+                                                    {{$item->diagnosa.", "}}
+                                                @endforeach
+                                            @else
+                                                <p>{{ $rekam->diagnosa." ".$rekam->diagnosis->name_id}}
+                                                </p>
+                                            @endif
+                                            
                                          </div>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <span class="fs-12 col-6 p-0 text-black">
-                                            Tindakan
+                                            {{$rekam->poli=="Poli Gigi" ? 'Resep Obat' : 'Tindakan'}}
                                         </span>
                                         <div class="col-8 p-0">
-                                            <p>{!! $rekam->tindakan !!}</p>
+                                            @if ($rekam->poli == "Poli Gigi")
+                                                {!! $rekam->resep_obat !!}
+                                            @else
+                                                <p>{!! $rekam->tindakan !!}</p>
+                                            @endif
                                          </div>
                                     </div>
                                 </div>

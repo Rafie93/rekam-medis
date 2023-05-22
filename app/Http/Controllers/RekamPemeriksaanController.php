@@ -61,6 +61,23 @@ class RekamPemeriksaanController extends Controller
 
     }
 
+    public function resep(Request $request)
+    {
+        $this->validate($request,[
+            'rekam_id' => 'required',
+            'pasien_id' => 'required',
+            'resep_obat' => 'required',
+        ]);
+
+        $rekam = Rekam::find($request->rekam_id);
+        $rekam->update([
+            'resep_obat' => $request->resep_obat
+        ]);
+
+        return redirect()->route('rekam.detail',$request->pasien_id)
+                ->with('sukses','Resep Obat Berhasil diperbaharui');
+
+    }
     
 
 }
