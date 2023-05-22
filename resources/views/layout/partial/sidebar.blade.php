@@ -8,20 +8,18 @@
             </li>
             
             
-            @if (auth()->user()->role_display()=='Admin')
-                <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                        <i class="flaticon-381-television"></i>
-                        <span class="nav-text">Pasien</span>
-                    </a>
-                    <ul aria-expanded="false">
-                        <li><a href="{{Route('pasien')}}">Data Pasien</a></li>
-                        <li><a href="{{Route('pasien.add')}}">Pasien Baru</a></li>
-                    </ul>
-                </li>
-            @endif
             @if (auth()->user()->role_display()=='Admin' 
             || auth()->user()->role_display()=='Pendaftaran'
             )
+             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-381-television"></i>
+                    <span class="nav-text">Pasien</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{Route('pasien')}}">Data Pasien</a></li>
+                    <li><a href="{{Route('pasien.add')}}">Pasien Baru</a></li>
+                </ul>
+            </li>
             <li><a href="{{Route('rekam')}}" class="ai-icon" aria-expanded="false">
                     <i class="flaticon-381-notepad"></i>
                     <span class="nav-text">Rekam Medis</span>

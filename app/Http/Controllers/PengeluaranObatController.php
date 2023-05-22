@@ -77,19 +77,20 @@ class PengeluaranObatController extends Controller
             $status = 5;
             // if ($rekam->cara_bayar=="Umum/Mandiri") {
             //     $status = 4;
-            //     $user = User::where('role',2)->get();
-            //     $message = "Pembayaran a\n Pasien ".$rekam->pasien->nama.", silahkan diproses";
-            //     Notification::send($user, new RekamUpdateNotification($rekam,$message));
-            //     foreach ($user as $key => $item) {
-            //         $link = Route('rekam.detail',$rekam->pasien_id);
-            //         $waktu = Carbon::parse($rekam->created_at)->format('d/m/Y H:i:s');
-            //         event(new StatusRekamUpdate($item->id,$rekam->no_rekam,$message,$link,$waktu));
-            //     }
+                $user = User::where('role',2)->get();
+                $message = "Pasien ".$rekam->pasien->nama.", sudah selesai berobat";
+                Notification::send($user, new RekamUpdateNotification($rekam,$message));
+                foreach ($user as $key => $item) {
+                    $link = Route('rekam.detail',$rekam->pasien_id);
+                    $waktu = Carbon::parse($rekam->created_at)->format('d/m/Y H:i:s');
+                    event(new StatusRekamUpdate($item->id,$rekam->no_rekam,$message,$link,$waktu));
+                }
 
             // }
             $rekam->update([
                 'status' => $status
             ]);
+            
             return redirect()->route('obat.pengeluaran',$request->rekam_id)->with('sukses','Obat Berhasil diberikan');
 
         } catch (\PDOException $e) {
