@@ -54,7 +54,7 @@
                                  @if ($rekamLatest)
                                     {!! $rekamLatest->status_display() !!}
                                 @endif 
-                                @if (auth()->user()->role_display()=="Admin")
+                                @if (auth()->user()->role_display()=="Admin" || auth()->user()->role_display()=="Pendaftaran")
                                 <a href="{{Route('pasien.edit',$pasien->id)}}" style="width: 120px"
                                     class="btn-rounded btn-info btn-xs "><i class="fa fa-pencil"></i> Edit Pasien</a>
                                 @endif
