@@ -48,22 +48,14 @@
                                 <th>No. HP</th>
                                 <th>Pengobatan</th>
                                 <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             
                             @foreach ($datas as $key=>$row)
                                 <tr>
-                                    <td>                                           
-                                        <a href="{{Route('rekam.detail',$row->id)}}" class="btn btn-primary shadow btn-xs sharp mr-1">
-                                           <i class="fa fa-eye"></i></a>
-                                        <a href="{{Route('pasien.edit',$row->id)}}" class="btn btn-info shadow btn-xs sharp mr-1">
-                                            <i class="fa fa-pencil"></i></a>
-                                        <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-link="{{Route('pasien.delete',$row->id)}}"
-                                         r-name="{{$row->nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
-
-                                   </td>
-                                   
+                                    <td>{{$datas->firstItem() + $key}}</td>
                                    <td><a href="{{Route('rekam.detail',$row->id)}}">RM#{{$row->no_rm}}</a></td>
                                    <td>{{$row->nama}}</td>
                                    <td>{{$row->tmp_lahir}},{{$row->tgl_lahir}}</td>
@@ -76,6 +68,15 @@
                                    <td>
                                       {!! $row->statusPasien() !!}
                                    </td>
+                                   <td>                                           
+                                    <a href="{{Route('rekam.detail',$row->id)}}" class="btn btn-primary shadow btn-xs sharp mr-1">
+                                       <i class="fa fa-eye"></i></a>
+                                    <a href="{{Route('pasien.edit',$row->id)}}" class="btn btn-info shadow btn-xs sharp mr-1">
+                                        <i class="fa fa-pencil"></i></a>
+                                    <a href="#" class="btn btn-danger shadow btn-xs sharp delete" r-link="{{Route('pasien.delete',$row->id)}}"
+                                     r-name="{{$row->nama}}" r-id="{{$row->id}}"><i class="fa fa-trash"></i></a>
+
+                               </td>
                                 </tr>
                             @endforeach
                         </tbody>

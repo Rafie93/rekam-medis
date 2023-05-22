@@ -26,9 +26,16 @@ class RekamController extends Controller
         $user = auth()->user();
         $role = $user->role_display();
         $rekams = Rekam::latest()
+                    ->select('rekam.*')
+                    ->leftJoin('pasien', function($join) {
+                        $join->on('rekam.id', '=', 'pasien.id');
+                    })
                     ->when($request->keyword, function ($query) use ($request) {
-                        $query->where('tgl_rekam', 'LIKE', "%{$request->keyword}%")
-                        ->orwhere('cara_bayar', 'LIKE', "%{$request->keyword}%");
+                        $query->where('rekam.tgl_rekam', 'LIKE', "%{$request->keyword}%")
+                                ->orwhere('rekam.cara_bayar', 'LIKE', "%{$request->keyword}%")
+                                ->orwhere('pasien.nama', 'LIKE', "%{$request->keyword}%")
+                                ->orwhere('pasien.no_bpjs', 'LIKE', "%{$request->keyword}%")
+                                ->orwhere('pasien.no_rm', 'LIKE', "%{$request->keyword}%");
                     })
                     ->when($role, function ($query) use ($role,$user){
                         if($role=="Dokter"){
