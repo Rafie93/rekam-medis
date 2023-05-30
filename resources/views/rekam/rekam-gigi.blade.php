@@ -94,7 +94,7 @@
                                                 <label class="text-black font-w500">Kondisi Gigi* </label>
                                                 <select name="pemeriksaan" id="kondisi_gigi" class="form-control">
                                                     @foreach ($kondisi_gigi as $item)
-                                                        <option value="{{$item->kode}}">{{$item->kode}}</option>
+                                                        <option value="{{$item->kode}}">{{$item->kode}} || {{$item->nama}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

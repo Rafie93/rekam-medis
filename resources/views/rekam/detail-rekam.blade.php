@@ -11,7 +11,7 @@
 
 {{-- DATA --}}
     <div class="row">   
-        <div class="">
+        <div class="col-xl-12">
             <div class="row">
                 <div class="col-sm-12 col-sm-5 col-lg-5">
                     <div class="card">
@@ -30,6 +30,12 @@
                                     <h3 class="fs-18 font-w600 mb-1"><a href="javascript:void(0)"
                                          class="text-black">{{$pasien->nama}}</a></h3>
                                     <h4 class="fs-14 font-w600 mb-1">{{$pasien->tmp_lahir.", ".$pasien->tgl_lahir}}</h4>
+                                    @php
+                                        $b_day = \Carbon\Carbon::parse($pasien->tgl_lahir); // Tanggal Lahir
+                                        $now = \Carbon\Carbon::now();
+                                    @endphp
+                                    <h4 class="fs-14 font-w600 mb-1">{{"Usia : ".$b_day->diffInYears($now) }}</h4>
+                                    
                                     <h4 class="fs-14 font-w600 mb-1">{{$pasien->jk.", ".$pasien->status_menikah}}</h4>
                                     <span class="fs-14">{{$pasien->alamat_lengkap}}</span>
                                     <span class="fs-14">{{$pasien->keluhan.", ".$pasien->kecamatan.", ".$pasien->kabupaten.", ".$pasien->kewarganegaraan}}</span>
@@ -113,163 +119,195 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header border-0 pb-0">
-                            <h4 class="fs-20 text-black mb-0">Rekam Medis Pasien</h4>
-                            @if ($rekamLatest)
-                                @if ($rekamLatest->status==1)
-                                    @if (auth()->user()->role_display()=="Admin" ||
-                                         auth()->user()->role_display()=="Pendaftaran")
-                                        <a href="{{Route('rekam.status',[$rekamLatest->id,2])}}" class="btn btn-primary">
-                                            Lanjutkan Ke Dokter
-                                            <span class="btn-icon-right"><i class="fa fa-check"></i></span>
-                                        </a>
-                                    @endif
-                                @elseif ($rekamLatest->status==2)
-                                   @if (auth()->user()->role_display()=="Admin" || auth()->user()->role_display()=="Dokter")
-                                        <a href="{{Route('rekam.status',[$rekamLatest->id,3])}}" class="btn btn-primary">
-                                            Selesaikan Pemeriksaan & Perawatan
-                                            <span class="btn-icon-right"><i class="fa fa-check"></i></span>
-                                        </a>
-                                   @endif
-                                @elseif ($rekamLatest->status==4)
-                                   @if (auth()->user()->role_display()=="Admin" || auth()->user()->role_display()=="Pendaftaran")
-                                        <a href="{{Route('rekam.status',[$rekamLatest->id,5])}}" class="btn btn-primary">
-                                            Selesaikan Pembayaran & Rekam Medis ini
-                                            <span class="btn-icon-right"><i class="fa fa-check"></i></span>
-                                        </a>
-                                   @endif
-                                @elseif ($rekamLatest->status==3)
-                                   @if (auth()->user()->role_display()=="Admin")
-                                        <a href="{{Route('rekam.status',[$rekamLatest->id,5])}}" class="btn btn-primary">
-                                            Selesaikan Rekam Medis Ini
-                                            <span class="btn-icon-right"><i class="fa fa-check"></i></span>
-                                        </a>
-                                   @endif
-                               
-                                @endif
+                
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header border-0 pb-0">
+                    <h4 class="fs-20 text-black mb-0">Rekam Medis Pasien</h4>
+                    @if ($rekamLatest)
+                        @if ($rekamLatest->status==1)
+                            @if (auth()->user()->role_display()=="Admin" ||
+                                 auth()->user()->role_display()=="Pendaftaran")
+                                <a href="{{Route('rekam.status',[$rekamLatest->id,2])}}" class="btn btn-primary">
+                                    Lanjutkan Ke Dokter
+                                    <span class="btn-icon-right"><i class="fa fa-check"></i></span>
+                                </a>
                             @endif
-                            
+                        @elseif ($rekamLatest->status==2)
+                           @if (auth()->user()->role_display()=="Admin" || auth()->user()->role_display()=="Dokter")
+                                <a href="{{Route('rekam.status',[$rekamLatest->id,3])}}" class="btn btn-primary">
+                                    Selesaikan Pemeriksaan & Perawatan
+                                    <span class="btn-icon-right"><i class="fa fa-check"></i></span>
+                                </a>
+                           @endif
+                        @elseif ($rekamLatest->status==4)
+                           @if (auth()->user()->role_display()=="Admin" || auth()->user()->role_display()=="Pendaftaran")
+                                <a href="{{Route('rekam.status',[$rekamLatest->id,5])}}" class="btn btn-primary">
+                                    Selesaikan Pembayaran & Rekam Medis ini
+                                    <span class="btn-icon-right"><i class="fa fa-check"></i></span>
+                                </a>
+                           @endif
+                        @elseif ($rekamLatest->status==3)
+                           @if (auth()->user()->role_display()=="Admin")
+                                <a href="{{Route('rekam.status',[$rekamLatest->id,5])}}" class="btn btn-primary">
+                                    Selesaikan Rekam Medis Ini
+                                    <span class="btn-icon-right"><i class="fa fa-check"></i></span>
+                                </a>
+                           @endif
+                       
+                        @endif
+                    @endif
+                    
+                </div>
+                <div class="card-body">
+                   
+                    <div class="table-responsive card-table"> 
+                        <div class="form-group col-lg-6" style="float: right">
+                            <form method="get" action="{{ url()->current() }}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control gp-search"
+                                        name="keyword" value="{{request('keyword')}}" placeholder="Cari tanggal periksa" value="" autocomplete="off">
+                                       
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select name="poli" id="poli" class="form-control"  onchange="this.form.submit()">
+                                            <option value="">Semua Rekam</option>
+                                            @foreach ($poli as $item)
+                                                @if ($rekamLatest)
+                                                    @if (request('poli') == $item->nama)
+                                                    <option value="{{$item->nama}}" selected>{{$item->nama}}</option>  
+                                                    @else 
+                                                    <option value="{{$item->nama}}">{{$item->nama}}</option>
+                                                    @endif
+                                                @else 
+                                                    <option value="{{$item->nama}}">{{$item->nama}}</option>
+        
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                            </form>
+        
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive card-table">
-                                <table  class="table table-sm table-responsive-md table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Tgl Periksa</th>
-                                            <th>Dokter</th>
-                                            <th>Anamnesa (S)</th>
-                                            <th>Pemeriksaan (O)</th>
-                                            <th>Diagnosa (A)</th>
-                                            <th>Tindakan (P)</th>
-                                            <th>#</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($rekams as $key=>$row)
-                                            <tr>
-                                                <td>{{ $rekams->firstItem() + $key }}</td>
-                                            <td>{{$row->tgl_rekam}}</td>
-                                            <td>{{$row->dokter->nama}}
-                                                <br><strong>{{$row->poli}}</strong>
-                                            </td>
-                                            <td>{{$row->keluhan}}</td>
-                                            <td>
-                                                @if ($row->poli=="Poli Gigi")
-                                                    @foreach ($row->gigi() as $item)
-                                                        <li>Gigi {{$item->elemen_gigi}} : {{$item->pemeriksaan}}</li>
-                                                    @endforeach
-                                                @else 
-                                                    {!! $row->pemeriksaan !!}</td>
-                                                @endif
-                                            <td>
-                                                @if ($row->poli=="Poli Gigi")
-                                                    @foreach ($row->gigi() as $item)
-                                                        <li>{{$item->diagnosa.", ".$item->diagnosis->name_id}}</li>
-                                                    @endforeach
-                                                @else 
-                                                    {{$row->diagnosa}}
-                                                    @if ($row->diagnosa!=null)
-                                                        <br/>{{$row->diagnosis->name_id}}
-                                                    @endif
-                                                @endif
-                                            <td>
-                                                @if ($row->poli=="Poli Gigi")
-                                                    @foreach ($row->gigi() as $item)
-                                                        <li>{{$item->tindak->nama}}</li>
-                                                    @endforeach
-                                                @else 
-                                                     {!! $row->tindakan !!}</td>
-                                                @endif
-                                            <td>
-                                                
-                                            @if ($row->status!=5 && $row->status!=4)
-                                            <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                                               @if ($row->poli!="Poli Gigi")
-                                                    @if (auth()->user()->role_display() == "Dokter" 
-                                                    || auth()->user()->role_display() == "Admin"
-                                                    || auth()->user()->role_display() == "Pendaftaran")
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#addPemeriksaan"
-                                                        data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
-                                                        data-pemeriksaan="{{$row->pemeriksaan}}" style="width: 120px"
-                                                        class="btn-rounded btn-info btn-xs addPemeriksaan"><i class="fa fa-pencil"></i> Object</a>
-                                                    @endif
-                                                        
-                                                    @if (auth()->user()->role_display() == "Dokter" || auth()->user()->role_display() == "Admin")
-                                                        <a href="javascript:void(0)" data-toggle="modal" 
-                                                            data-target="#addDiagnosa"
-                                                            data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
-                                                            data-tindakan="{{$row->tindakan}}" style="width: 120px"
-                                                            class="btn-rounded btn-primary btn-xs addDiagnosa">
-                                                            <i class="fa fa-pencil"></i>Assessment</a>
-                                                            
-                                                            <a href="javascript:void(0)" data-toggle="modal" 
-                                                            data-target="#addTindakan"
-                                                            data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
-                                                            data-tindakan="{{$row->tindakan}}" style="width: 120px"
-                                                            class="btn-rounded btn-success btn-xs addTindakan">
-                                                            <i class="fa fa-pencil"></i>Plan</a>
-                                                    @endif
-                                                @else 
-                                                    @if (auth()->user()->role_display() == "Dokter" 
-                                                    || auth()->user()->role_display() == "Admin")
-                                                        <a href="{{Route('rekam.gigi.add',$row->id)}}" style="width: 120px"
-                                                        class="btn-rounded btn-info btn-xs "><i class="fa fa-pencil"></i> Rekam</a>
-
-                                                        @if ($row->gigi()->count() > 0)
-                                                            <a href="javascript:void(0)" data-toggle="modal" 
-                                                            data-target="#addResep"
-                                                            data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
-                                                            data-resep="{{$row->resep_obat}}" style="width: 120px"
-                                                            class="btn-rounded btn-success btn-xs addResep">
-                                                            <i class="fa fa-pencil"></i>Resep Obat</a>
-                                                        @endif
-
-                                                    @endif
-                                                @endif 
-                                                
-                                               
-                                            </div>
-                                            @else
-                                                <div class="d-flex">
-                                                    <a href="{{Route('obat.pengeluaran',$row->id)}}" style="width: 120px" class="btn-rounded btn-primary btn-xs ">
-                                                        <i class="fa fa-eye"></i> Obat</a>
-                                                </div>                                                   
+                        <table class="table table-responsive-md table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Tgl Periksa</th>
+                                    <th>Dokter</th>
+                                    <th>Anamnesa (S)</th>
+                                    <th>Pemeriksaan (O)</th>
+                                    <th>Diagnosa (A)</th>
+                                    <th>Tindakan (P)</th>
+                                    <th>#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($rekams as $key=>$row)
+                                    <tr>
+                                        <td>{{ $rekams->firstItem() + $key }}</td>
+                                    <td>{{$row->tgl_rekam}}</td>
+                                    <td>{{$row->dokter->nama}}
+                                        <br><strong>{{$row->poli}}</strong>
+                                    </td>
+                                    <td>{{$row->keluhan}}</td>
+                                    <td>
+                                        @if ($row->poli=="Poli Gigi")
+                                            @foreach ($row->gigi() as $item)
+                                                <li>Gigi {{$item->elemen_gigi}} : {{$item->pemeriksaan}}</li>
+                                            @endforeach
+                                        @else 
+                                            {!! $row->pemeriksaan !!}</td>
+                                        @endif
+                                    <td>
+                                        @if ($row->poli=="Poli Gigi")
+                                            @foreach ($row->gigi() as $item)
+                                                <li>{{$item->diagnosa.", ".$item->diagnosis->name_id}}</li>
+                                            @endforeach
+                                        @else 
+                                            {{$row->diagnosa}}
+                                            @if ($row->diagnosa!=null)
+                                                <br/>{{$row->diagnosis->name_id}}
                                             @endif
-                                            </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    
-                                </table>
-                                <div class="dataTables_info" id="example_info" role="status"
-                                aria-live="polite">Showing {{$rekams->firstItem()}} to {{$rekams->perPage() * $rekams->currentPage()}} of {{$rekams->total()}} entries</div>
-           
-                               {{ $rekams->appends(request()->except('page'))->links() }}
-                            </div>
-                        </div>
+                                        @endif
+                                    <td>
+                                        @if ($row->poli=="Poli Gigi")
+                                            @foreach ($row->gigi() as $item)
+                                                <li>{{$item->tindak->nama}}</li>
+                                            @endforeach
+                                        @else 
+                                             {!! $row->tindakan !!}</td>
+                                        @endif
+                                    <td>
+                                        
+                                    @if ($row->status!=5 && $row->status!=4)
+                                    <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+                                       @if ($row->poli!="Poli Gigi")
+                                            @if (auth()->user()->role_display() == "Dokter" 
+                                            || auth()->user()->role_display() == "Admin"
+                                            || auth()->user()->role_display() == "Pendaftaran")
+                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#addPemeriksaan"
+                                                data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
+                                                data-pemeriksaan="{{$row->pemeriksaan}}" style="width: 120px"
+                                                class="btn-rounded btn-info btn-xs addPemeriksaan"><i class="fa fa-pencil"></i> Object</a>
+                                            @endif
+                                                
+                                            @if (auth()->user()->role_display() == "Dokter" || auth()->user()->role_display() == "Admin")
+                                                <a href="javascript:void(0)" data-toggle="modal" 
+                                                    data-target="#addDiagnosa"
+                                                    data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
+                                                    data-tindakan="{{$row->tindakan}}" style="width: 120px"
+                                                    class="btn-rounded btn-primary btn-xs addDiagnosa">
+                                                    <i class="fa fa-pencil"></i>Assessment</a>
+                                                    
+                                                    <a href="javascript:void(0)" data-toggle="modal" 
+                                                    data-target="#addTindakan"
+                                                    data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
+                                                    data-tindakan="{{$row->tindakan}}" style="width: 120px"
+                                                    class="btn-rounded btn-success btn-xs addTindakan">
+                                                    <i class="fa fa-pencil"></i>Plan</a>
+                                            @endif
+                                        @else 
+                                            @if (auth()->user()->role_display() == "Dokter" 
+                                            || auth()->user()->role_display() == "Admin")
+                                                <a href="{{Route('rekam.gigi.add',$row->id)}}" style="width: 120px"
+                                                class="btn-rounded btn-info btn-xs "><i class="fa fa-pencil"></i> Rekam</a>
+
+                                                @if ($row->gigi()->count() > 0)
+                                                    <a href="javascript:void(0)" data-toggle="modal" 
+                                                    data-target="#addResep"
+                                                    data-id="{{$row->id}}" data-tanggal="{{$row->tgl_rekam}}"
+                                                    data-resep="{{$row->resep_obat}}" style="width: 120px"
+                                                    class="btn-rounded btn-success btn-xs addResep">
+                                                    <i class="fa fa-pencil"></i>Resep Obat</a>
+                                                @endif
+
+                                            @endif
+                                        @endif 
+                                        
+                                       
+                                    </div>
+                                    @else
+                                        <div class="d-flex">
+                                            <a href="{{Route('obat.pengeluaran',$row->id)}}" style="width: 120px" class="btn-rounded btn-primary btn-xs ">
+                                                <i class="fa fa-eye"></i> Obat</a>
+                                        </div>                                                   
+                                    @endif
+                                    </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            
+                        </table>
+                        <div class="dataTables_info" id="example_info" role="status"
+                        aria-live="polite">Showing {{$rekams->firstItem()}} to {{$rekams->perPage() * $rekams->currentPage()}} of {{$rekams->total()}} entries</div>
+   
+                       {{ $rekams->appends(request()->except('page'))->links() }}
                     </div>
                 </div>
             </div>

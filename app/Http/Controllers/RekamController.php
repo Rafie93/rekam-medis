@@ -75,19 +75,29 @@ class RekamController extends Controller
     public function detail(Request $request,$pasien_id)
     {
         $pasien = Pasien::find($pasien_id);
-        $rekams = Rekam::latest()
-                    ->where('pasien_id',$pasien_id)
-                    ->paginate(5);
+        
         $rekamLatest = Rekam::latest()
                                 ->where('status','!=',5)
                                 ->where('pasien_id',$pasien_id)
                                 ->first();
+
+        $rekams = Rekam::latest()
+                    ->where('pasien_id',$pasien_id)
+                    ->when($request->keyword, function ($query) use ($request) {
+                        $query->where('tgl_rekam', 'LIKE', "%{$request->keyword}%");
+                    })
+                    ->when($request->poli, function ($query) use ($request) {
+                        $query->where('poli', 'LIKE', "%{$request->poli}%");
+                    })
+                    ->paginate(5);
+                    
         if($rekamLatest){
            auth()->user()->notifications->where('data.no_rekam',$rekamLatest->no_rekam)->markAsRead();
         //   dd($data);
         }
+        $poli = Poli::where('status',1)->get();
 
-        return view('rekam.detail-rekam',compact('pasien','rekams','rekamLatest'));
+        return view('rekam.detail-rekam',compact('pasien','rekams','rekamLatest','poli'));
     }
 
     function store(Request $request){

@@ -141,7 +141,9 @@
                                     <option value="Pelajar/Mahasiswa" {{$data->pekerjaan =="Pelajar/Mahasiswa" ? 'selected' : ''}}>Pelajar/Mahasiswa</option>
                                     <option value="Petani" {{$data->pekerjaan =="Petani" ? 'selected' : ''}}>Petani</option>
                                     <option value="Guru/Pengajar" {{$data->pekerjaan =="Guru/Pengajar" ? 'selected' : ''}}>Guru/Pengajar</option>
+                                    <option value="IRT" {{$data->pekerjaan =="IRT" ? 'selected' : ''}}>IRT</option>
                                     <option value="Lain-Lain" {{$data->pekerjaan =="Lain-Lain" ? 'selected' : ''}}>Lain-Lain</option>
+                                    
                                 </select>
                                 @error('pendidikan')
                                 <div class="invalid-feedback animated fadeInUp"
