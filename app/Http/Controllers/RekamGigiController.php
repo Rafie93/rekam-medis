@@ -24,9 +24,11 @@ class RekamGigiController extends Controller
         $pem_gigi = RekamGigi::where('rekam_id',$rekam->id)->get();
         $elemen_gigis="";
         $pemeriksaan_gigi="";
-        $numItems = $pem_gigi->count();
         $i = 0;
-        foreach($pem_gigi as $key=>$value){
+        $all_riwayat_gigi = RekamGigi::where('pasien_id',$pasienId)->get();
+        $numItems = $all_riwayat_gigi->count();
+
+        foreach($all_riwayat_gigi as $key=>$value){
             $elemen_gigis.=$value->elemen_gigi;
             $pemeriksaan_gigi.=$value->pemeriksaan;
             if(++$i != $numItems) {
@@ -34,8 +36,8 @@ class RekamGigiController extends Controller
                 $pemeriksaan_gigi.=",";
             }
         }
-
-        $all_riwayat_gigi = RekamGigi::where('pasien_id',$pasienId)->get();
+        // dd($elemen_gigis);
+        // $all_riwayat_gigi = RekamGigi::where('pasien_id',$pasienId)->get();
         
         return view('rekam.odontogram',compact('rekam','elemen_gigis','pemeriksaan_gigi','all_riwayat_gigi'));
     }
@@ -65,6 +67,10 @@ class RekamGigiController extends Controller
     public function store(Request $request,$rekamId){
         $rekam = Rekam::find($rekamId);
         // dd($request->all());
+        
+        if(!$request->element_gigi){
+            return redirect()->back()->with('gagal','Tambahkan dulu rincian pemeriksaan baru menyimpan data');
+        }
         try {
             DB::beginTransaction();
             if ($request->element_gigi) {

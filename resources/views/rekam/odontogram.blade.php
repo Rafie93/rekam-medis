@@ -416,23 +416,23 @@
             for(var i = 3; i < 8; i++){
                 var resultPemeriksaan = "";
                 itemElemenGigi.find((value, index) => {
-                    if (value == 55 - i) {
+                    if (value == 58 - i) {
                         resultPemeriksaan= itemPemeriksaan[index];
                     }
                     
                 });
 
-                dientes.push(new DienteModel(55 - i, i * 25, 1 * 40,resultPemeriksaan));	
+                dientes.push(new DienteModel(58 - i, i * 25, 1 * 40,resultPemeriksaan));	
             }
             for(var i = 3; i < 8; i++){
                 var resultPemeriksaan = "";
                 itemElemenGigi.find((value, index) => {
-                    if (value == 85 - i) {
+                    if (value == 88 - i) {
                         resultPemeriksaan= itemPemeriksaan[index];
                     }
                     
                 });
-                dientes.push(new DienteModel(85 - i, i * 25, 2 * 40,resultPemeriksaan));	
+                dientes.push(new DienteModel(88 - i, i * 25, 2 * 40,resultPemeriksaan));	
             }
             for(var i = 0; i < 8; i++){
                 var resultPemeriksaan = "";

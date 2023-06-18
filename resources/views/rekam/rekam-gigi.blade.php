@@ -13,30 +13,12 @@
         <div class="card">
             <div class="card-body">
                 <div class="basic-form">
+                    <a href="{{Route('rekam.gigi.odontogram',$rekam->pasien_id)}}" style="width: 120px"
+                        class="btn-rounded btn-info btn-xs "><i class="fa fa-eye"></i> Lihat Riwayat Odontogram</a>
+                        <br/><br/>
                     <table class="table" style="width: 100%">
                     <tbody>
-                        {{-- <tr>
-                            <td>
-                                <div id="tratamiento">
-                                    <h2>Tratamiento</h2>
-                                    <select 
-                                      data-bind=" options: tratamientosPosibles, 
-                                                  value: tratamientoSeleccionado, 
-                                                  optionsText: function(item){ return item.nombre; },
-                                                  optionsCaption: 'Seleccione un tratamiento...'">
-                                    </select>
-                                    <ul data-bind="foreach: tratamientosAplicados">
-                                      <li>
-                                        P<span data-bind="text: diente.id"></span><span data-bind="text: cara"></span>
-                                        -            
-                                        <span data-bind="text: tratamiento.nombre"></span>
-                                        | 
-                                        <a href="#" data-bind="click: $parent.quitarTratamiento">Eliminar</a>
-                                      </li>
-                                    </ul>
-                                  </div>
-                            </td>
-                        </tr> --}}
+                        
                         <tr>
                             <td align="center">
                                 <div id="odontograma"></div>
@@ -57,7 +39,7 @@
                                                 <label class="text-black font-w500">Element Gigi*</label>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                            <select name="element_gigi" id="element_gigi" class="form-control">
+                                                            <select id="element_gigi" class="form-control">
                                                                 @php
                                                                     for ($i=11; $i < 19; $i++) { 
                                                                         echo "<option value='".$i."'>".$i."</option>";
@@ -71,7 +53,7 @@
                                                                     for ($i=41; $i < 49; $i++) { 
                                                                         echo "<option value='".$i."'>".$i."</option>";
                                                                     }
-                                                                    for ($i=48; $i < 53; $i++) { 
+                                                                    for ($i=51; $i < 56; $i++) { 
                                                                         echo "<option value='".$i."'>".$i."</option>";
                                                                     }
                                                                     for ($i=61; $i < 66; $i++) { 
@@ -80,7 +62,7 @@
                                                                     for ($i=71; $i < 76; $i++) { 
                                                                         echo "<option value='".$i."'>".$i."</option>";
                                                                     }
-                                                                    for ($i=78; $i < 83; $i++) { 
+                                                                    for ($i=81; $i < 86; $i++) { 
                                                                         echo "<option value='".$i."'>".$i."</option>";
                                                                     }
                                                                 @endphp
@@ -525,26 +507,27 @@
 
                 dientes.push(new DienteModel(18 - i, i * 25, 0,resultPemeriksaan));	
             }
+            // BARIS 2 COLUMN 1
             for(var i = 3; i < 8; i++){
                 var resultPemeriksaan = "";
                 itemElemenGigi.find((value, index) => {
-                    if (value == 55 - i) {
+                    if (value == 58 - i) {
                         resultPemeriksaan= itemPemeriksaan[index];
                     }
                     
                 });
 
-                dientes.push(new DienteModel(55 - i, i * 25, 1 * 40,resultPemeriksaan));	
+                dientes.push(new DienteModel(58 - i, i * 25, 1 * 40,resultPemeriksaan));	
             }
             for(var i = 3; i < 8; i++){
                 var resultPemeriksaan = "";
                 itemElemenGigi.find((value, index) => {
-                    if (value == 85 - i) {
+                    if (value == 88 - i) {
                         resultPemeriksaan= itemPemeriksaan[index];
                     }
                     
                 });
-                dientes.push(new DienteModel(85 - i, i * 25, 2 * 40,resultPemeriksaan));	
+                dientes.push(new DienteModel(88 - i, i * 25, 2 * 40,resultPemeriksaan));	
             }
             for(var i = 0; i < 8; i++){
                 var resultPemeriksaan = "";
