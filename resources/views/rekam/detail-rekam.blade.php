@@ -113,6 +113,25 @@
                                            <p>{{$pasien->alergi}}</p>
                                         </div>
                                     </div>
+                                    <div class="d-flex align-items-center">
+                                        <span class="fs-12 col-6 p-0 text-black">
+                                            <svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect width="19" height="19" fill="#5FBF91"/>
+                                            </svg>
+                                            File General
+                                        </span>
+                                        <div class="col-8 p-0">
+                                          @if ($pasien->general_uncent != null)
+                                            <a style="width: 120px"
+                                            class="btn-rounded btn-info btn-xs " href="{{Route('pasien.file',$pasien->id)}}" 
+                                            target="__BLANK" view>Lihat Data</a>
+
+                                          @else 
+                                            Belum Tersedia
+                                          @endif
+                                           
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -222,7 +241,16 @@
                                                 <li>Gigi {{$item->elemen_gigi}} : {{$item->pemeriksaan}}</li>
                                             @endforeach
                                         @else 
-                                            {!! $row->pemeriksaan !!}</td>
+                                            {!! $row->pemeriksaan !!}
+                                          @if ($row->pemeriksaan_file !=null)
+                                              <br>
+                                              <a target="__BLANK"
+                                               href="{{Route('pem.file',[
+                                                'id' => $row->id,
+                                                'type' => 'pem'
+                                              ])}}"> <u style="color:rgb(28, 85, 231);">Lihat Foto</u> </button>
+                                          @endif
+                                        </td>
                                         @endif
                                     <td>
                                         @if ($row->poli=="Poli Gigi")
@@ -241,7 +269,15 @@
                                                 <li>{{$item->tindak->nama}}</li>
                                             @endforeach
                                         @else 
-                                             {!! $row->tindakan !!}</td>
+                                             {!! $row->tindakan !!}
+                                             @if ($row->tindakan_file !=null)
+                                              <br>
+                                              <a target="__BLANK" href="{{Route('pem.file',[
+                                                'id' => $row->id,
+                                                'type' => 'tind'
+                                              ])}}"> <u style="color:rgb(28, 85, 231);">Lihat Foto</u> </button>
+                                          @endif
+                                            </td>
                                         @endif
                                     <td>
                                         
@@ -340,34 +376,34 @@
     CKEDITOR.addCss('.cke_editable p { margin: 0 !important; }');
     CKEDITOR.replace('editor', {
         height  : '250px',
-        filebrowserUploadUrl: "{{route('rekam.upload', ['_token' => csrf_token() ])}}",
+        // filebrowserUploadUrl: "{{route('rekam.upload', ['_token' => csrf_token() ])}}",
         filebrowserUploadMethod: 'form',
         toolbarGroups: [
 		{ name: 'document',	   groups: [ 'mode', 'document' ] },		
  		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },			
-        { name: 'insert', groups: [ 'Image'] },
+        // { name: 'insert', groups: [ 'Image'] },
 	]
     });
 
     CKEDITOR.replace('editor2', {
         height  : '250px',
-        filebrowserUploadUrl: "{{route('rekam.upload', ['_token' => csrf_token() ])}}",
+        // filebrowserUploadUrl: "{{route('rekam.upload', ['_token' => csrf_token() ])}}",
         filebrowserUploadMethod: 'form',
         toolbarGroups: [
 		{ name: 'document',	   groups: [ 'mode', 'document' ] },		
  		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },			
-        { name: 'insert', groups: [ 'Image'] },
+        // { name: 'insert', groups: [ 'Image'] },
 	]
     });
 
     CKEDITOR.replace('editor3', {
         height  : '250px',
-        filebrowserUploadUrl: "{{route('rekam.upload', ['_token' => csrf_token() ])}}",
+        // filebrowserUploadUrl: "{{route('rekam.upload', ['_token' => csrf_token() ])}}",
         filebrowserUploadMethod: 'form',
         toolbarGroups: [
 		{ name: 'document',	   groups: [ 'mode', 'document' ] },		
  		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },			
-        { name: 'insert', groups: [ 'Image'] },
+        // { name: 'insert', groups: [ 'Image'] },
 	]
     });
    
@@ -457,5 +493,7 @@
         CKEDITOR.instances.editor3.setData( resep );
 
     });
+
+  
 </script>
 @endsection

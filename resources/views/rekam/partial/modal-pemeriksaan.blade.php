@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{Route('pemeriksaan.update')}}" method="POST">
+                <form action="{{Route('pemeriksaan.update')}}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <input type="hidden" id="rekamId" name="rekam_id" value="0">
                     <input type="hidden" id="pasienId" name="pasien_id" value="{{$pasien->id}}">
@@ -23,6 +23,14 @@
                         style="display: block;">{{$message}}</div>
                         @enderror
                        
+                    </div>
+                    <div class="form-group">
+                        <label class="text-black font-w500">Foto</label>
+                        <input type="file" name="file">
+                        @error('file')
+                        <div class="invalid-feedback animated fadeInUp"
+                        style="display: block;">{{$message}}</div>
+                        @enderror
                     </div>
                     
                     <div class="form-group">

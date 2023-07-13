@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/pasien/{id}/edit', [PasienController::class, 'edit'])->name('pasien.edit');
     Route::get('/pasien/{id}/delete', [PasienController::class, 'delete'])->name('pasien.delete');
     Route::get('/pasien/json', [PasienController::class, 'json'])->name('pasien.json');
+    Route::get('/pasien/{id}/file', [PasienController::class, 'file'])->name('pasien.file');
 
     Route::post('/pasien/store', [PasienController::class, 'store'])->name('pasien.store');
     Route::post('/pasien/{id}/update', [PasienController::class, 'update'])->name('pasien.update');
@@ -111,6 +112,8 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/obat/pengeluaran/store', [PengeluaranObatController::class, 'store'])->name('obat.pengeluaran.store');
     Route::get('/obat/riwayat', [PengeluaranObatController::class, 'riwayat'])->name('obat.riwayat');
 
+
+    Route::get('/rekam/file/{id}/{type}', [RekamPemeriksaanController::class, 'file'])->name('pem.file');
 
 });
 

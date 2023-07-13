@@ -28,7 +28,7 @@ class RekamController extends Controller
         $rekams = Rekam::latest()
                     ->select('rekam.*')
                     ->leftJoin('pasien', function($join) {
-                        $join->on('rekam.id', '=', 'pasien.id');
+                        $join->on('rekam.pasien_id', '=', 'pasien.id');
                     })
                     ->when($request->keyword, function ($query) use ($request) {
                         $query->where('rekam.tgl_rekam', 'LIKE', "%{$request->keyword}%")
@@ -231,4 +231,6 @@ class RekamController extends Controller
         ]);
         return redirect()->route('rekam')->with('sukses','Data berhasil dihapus');
     } 
+
+   
 }

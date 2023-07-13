@@ -14,7 +14,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="basic-form">
-                    <form action="{{Route('pasien.update',$data->id)}}" method="POST">
+                    <form action="{{Route('pasien.update',$data->id)}}" method="POST" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">No.RM*</label>
@@ -257,6 +257,23 @@
                                 style="display: block;">{{$message}}</div>
                                 @enderror
                             </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">File General Uncent</label>
+                            <div class="col-sm-10">
+                                <input type="file" name="file">
+                                @error('file')
+                                <div class="invalid-feedback animated fadeInUp"
+                                style="display: block;">{{$message}}</div>
+                                @enderror
+                               
+                            </div>
+                            @if ($data->general_uncent)
+                                <div>
+                                    <img src="{{$data->general_uncent}}" alt="" srcset="">
+                                </div>
+                            @endif
+                            <i>Upload File Jika Ingin Mengupdate file General uncent</i>
                         </div>
                         <hr>
                         <div class="form-group">

@@ -14,7 +14,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="basic-form">
-                    <form action="{{Route('pasien.store')}}" method="POST">
+                    <form action="{{Route('pasien.store')}}" method="POST" enctype="multipart/form-data">
                         {{ csrf_field() }}
                        
                         <div class="form-group row">
@@ -147,6 +147,7 @@
                                     <option value="Pelajar/Mahasiswa">Pelajar/Mahasiswa</option>
                                     <option value="Petani">Petani</option>
                                     <option value="Guru/Pengajar">Guru/Pengajar</option>
+                                    <option value="IRT">IRT</option>
                                     <option value="Lain-Lain">Lain-Lain</option>
                                 </select>
                                 @error('pendidikan')
@@ -265,6 +266,16 @@
                             <div class="col-sm-10">
                                 <textarea name="alergi" class="form-control" rows="1">{{old('alergi')}}</textarea>
                                 @error('alergi')
+                                <div class="invalid-feedback animated fadeInUp"
+                                style="display: block;">{{$message}}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">File General Uncent</label>
+                            <div class="col-sm-10">
+                                <input type="file" name="file">
+                                @error('file')
                                 <div class="invalid-feedback animated fadeInUp"
                                 style="display: block;">{{$message}}</div>
                                 @enderror

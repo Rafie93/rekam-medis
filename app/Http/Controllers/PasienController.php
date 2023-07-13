@@ -6,6 +6,10 @@ use App\Models\Pasien;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DataTables;
+use Image;
+use App\Models\Rekam;
+use App\Models\RekamGigi;
+use App\Models\PengeluaranObat;
 
 class PasienController extends Controller
 {
@@ -61,6 +65,11 @@ class PasienController extends Controller
         return view('pasien.edit',compact('data'));
     }
 
+    function file(Request $request,$id){
+        $data = Pasien::find($id);
+        return view('pasien.file',compact('data'));
+    }
+
     function store(Request $request){
         $this->validate($request,[
             'nama' => 'required',
@@ -71,7 +80,14 @@ class PasienController extends Controller
             'no_bpjs' => 'unique:pasien'
         ]);
 
-        Pasien::create($request->all());
+        $pasien = Pasien::create($request->all());
+        if ($request->hasFile('file')) {
+            $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            $pasien->general_uncent = $img;
+            $pasien->save();
+        }
+
+
         return redirect()->route('pasien')->with('sukses','Data berhasil ditambahkan');
 
     }
@@ -82,16 +98,30 @@ class PasienController extends Controller
             'no_hp' => 'required',
             'jk' => 'required',
             'cara_bayar' => 'required',
+            'file' => 'mimes:jpg,png,jpeg'
         ]);
         $data = Pasien::find($id);
         $data->update($request->all());
+        if ($request->hasFile('file')) {
+            $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            $data->update([
+                'general_uncent' => $img
+            ]);
+        }
+
         return redirect()->route('pasien')->with('sukses','Data berhasil diperbaharui');
 
     }
 
     public function delete(Request $request,$id)
     {
-        Pasien::find($id)->update(['deleted_at'=>Carbon::now()]);
+        // Pasien::find($id)->update(['deleted_at'=>Carbon::now()]);
+       $suk = Pasien::find($id)->delete();
+       if($suk){
+            Rekam::where('pasien_id',$id)->delete();
+            RekamGigi::where('pasien_id',$id)->delete();
+            PengeluaranObat::where('pasien_id',$id)->delete();
+       }
         return redirect()->route('pasien')->with('sukses','Data berhasil dihapus');
     } 
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rekam;
 use Illuminate\Http\Request;
-
+use Image;
 class RekamPemeriksaanController extends Controller
 {
     public function pemeriksaan(Request $request)
@@ -19,6 +19,13 @@ class RekamPemeriksaanController extends Controller
         $rekam->update([
             'pemeriksaan' => $request->pemeriksaan
         ]);
+
+        if ($request->hasFile('file')) {
+            $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            $rekam->update(
+                ['pemeriksaan_file' => $img]
+            );
+        }
 
         return redirect()->route('rekam.detail',$request->pasien_id)
                 ->with('sukses','Pemeriksaan Berhasil diperbaharui');
@@ -56,6 +63,13 @@ class RekamPemeriksaanController extends Controller
             'tindakan' => $request->tindakan
         ]);
 
+        if ($request->hasFile('file')) {
+            $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            $rekam->update(
+                ['tindakan_file' => $img]
+            );
+        }
+
         return redirect()->route('rekam.detail',$request->pasien_id)
                 ->with('sukses','Tindakan Berhasil diperbaharui');
 
@@ -76,6 +90,12 @@ class RekamPemeriksaanController extends Controller
 
         return redirect()->route('rekam.detail',$request->pasien_id)
                 ->with('sukses','Resep Obat Berhasil diperbaharui');
+
+    }
+
+    function file(Request $request, $id, $type){
+        $data = Rekam::find($id);
+        return view('rekam.file',compact('data','type'));
 
     }
     
