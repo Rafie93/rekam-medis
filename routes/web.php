@@ -104,6 +104,8 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/rekam/diagnosa/update', [RekamPemeriksaanController::class, 'diagnosa'])->name('diagnosa.update');
     Route::post('/rekam/resep-obat/update', [RekamPemeriksaanController::class, 'resep'])->name('resep.update');
 
+    Route::get('/rekam/diagnosa/delete/{id}', [RekamPemeriksaanController::class, 'diagnosa_delete'])->name('rekam.diagnosa.delete');
+
     Route::get('/rekam/status/{id}/{status}/update', [RekamController::class, 'rekam_status'])->name('rekam.status');
 
 
