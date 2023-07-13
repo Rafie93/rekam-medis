@@ -29,6 +29,8 @@ Route::get('test', function () {
 
 Route::get('/odontogram/{id}', [RekamGigiController::class, 'odontogram'])->name('odontogram');
 
+Route::get('/loaddata', [RekamPemeriksaanController::class, 'insertToTableNew'])->name('loaddata');
+
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/poliklinik', [PoliController::class, 'index'])->name('poli');

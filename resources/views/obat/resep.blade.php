@@ -43,16 +43,20 @@
                                     <td>{{  $key+1 }}</td>
                                     <td>{{$row->tgl_rekam}}</td>
                                     <td>{{$row->pasien->nama}}</td>
-                                    <td>{{$row->diagnosa}}
+                                    <td>
                                         @if ($row->poli=="Poli Gigi")
                                             @foreach ($row->gigi() as $item)
                                                 <li>{{$item->diagnosa.", ".$item->diagnosis->name_id}}</li>
                                             @endforeach
                                         @else 
-                                            {{$row->diagnosa}}
+                                            {{-- {{$row->diagnosa}}
                                             @if ($row->diagnosa!=null)
                                                 <br/>{{$row->diagnosis->name_id}}
-                                            @endif
+                                            @endif --}}
+                                            @foreach ($row->diagnosa() as $item)
+                                                {{$item->diagnosis->code}}<br/>{{$item->diagnosis->name_id}}
+                                            <br/><br/>
+                                            @endforeach
                                         @endif
                                     </td>
                                     <td>

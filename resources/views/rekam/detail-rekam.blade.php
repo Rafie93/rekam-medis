@@ -258,10 +258,25 @@
                                                 <li>{{$item->diagnosa.", ".$item->diagnosis->name_id}}</li>
                                             @endforeach
                                         @else 
-                                            {{$row->diagnosa}}
-                                            @if ($row->diagnosa!=null)
-                                                <br/>{{$row->diagnosis->name_id}}
-                                            @endif
+                                            {{-- {{$row->diagnosa}} --}}
+                                                <table>
+                                                    @foreach ($row->diagnosa() as $item)
+                                                    <tr>
+                                                        <td> {{$item->diagnosis->code}}</td>
+                                                        <td>
+                                                        @if (($rekamLatest->status <= 2))
+                                                            <a href="http://" class="btn btn-danger shadow btn-xs sharp">
+                                                                <i class="fa fa-trash"></i>   </a>
+                                                        @endif
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">{{$item->diagnosis->name_id}}</td>
+                                                    </tr>
+                                                    @endforeach
+
+                                                </table>
+                                            
                                         @endif
                                     <td>
                                         @if ($row->poli=="Poli Gigi")

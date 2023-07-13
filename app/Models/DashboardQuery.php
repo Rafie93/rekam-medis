@@ -106,9 +106,10 @@ class DashboardQuery
             from (
            
             select diagnosa
-            from rekam
+            from rekam_diagnosa a 
+            LEFT JOIN rekam r ON r.id = a.rekam_id
             where diagnosa is not null
-            and tgl_rekam LIKE "%'.$filterBulan.'%"
+            and r.tgl_rekam LIKE "%'.$filterBulan.'%"
 
             union all
             select diagnosa
@@ -128,9 +129,10 @@ class DashboardQuery
               from (
              
               select diagnosa
-              from rekam
+              from rekam_diagnosa a
+              LEFT JOIN rekam r ON r.id = a.rekam_id
               where diagnosa is not null
-              and tgl_rekam LIKE "%'.$filter.'%"
+              and r.tgl_rekam LIKE "%'.$filter.'%"
   
               union all
               select diagnosa

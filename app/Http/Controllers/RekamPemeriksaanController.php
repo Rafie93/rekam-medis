@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rekam;
 use Illuminate\Http\Request;
 use Image;
+use App\Models\RekamDiagnosa;
 class RekamPemeriksaanController extends Controller
 {
     public function pemeriksaan(Request $request)
@@ -41,9 +42,15 @@ class RekamPemeriksaanController extends Controller
         ]);
 
         $rekam = Rekam::find($request->rekam_id);
-        $rekam->update([
+        // $rekam->update([
+        //     'diagnosa' => $request->diagnosa
+        // ]);
+        $data = array(
+            'pasien_id' => $request->pasien_id,
+            'rekam_id' => $request->rekam_id,
             'diagnosa' => $request->diagnosa
-        ]);
+        );
+        RekamDiagnosa::updateOrCreate($data,$data);
 
         return redirect()->route('rekam.detail',$request->pasien_id)
                 ->with('sukses','Diagnosa Berhasil diperbaharui');
@@ -97,6 +104,19 @@ class RekamPemeriksaanController extends Controller
         $data = Rekam::find($id);
         return view('rekam.file',compact('data','type'));
 
+    }
+
+    function insertToTableNew(){
+        $rekam = Rekam::whereNotNull('diagnosa')->get();
+        foreach ($rekam as $key => $data) {
+            $data = array(
+                'pasien_id' => $data->pasien_id,
+                'rekam_id' => $data->id,
+                'diagnosa' => $data->diagnosa
+            );
+            RekamDiagnosa::updateOrCreate($data,$data);
+
+        }
     }
     
 

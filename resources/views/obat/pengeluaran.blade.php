@@ -141,8 +141,10 @@
                                                     {{$item->diagnosa.", "}}
                                                 @endforeach
                                             @else
-                                                <p>{{ $rekam->diagnosa." ".$rekam->diagnosis->name_id}}
-                                                </p>
+                                                @foreach ($rekam->diagnosa() as $item)
+                                                    {{$item->diagnosis->code}}<br/>{{$item->diagnosis->name_id}}
+                                                    <br/><br/>
+                                                @endforeach
                                             @endif
                                             
                                          </div>

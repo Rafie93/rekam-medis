@@ -180,7 +180,7 @@ class RekamController extends Controller
                     ->with('gagal','Pemeriksaan, Diagnosa, Tindakan Wajib diisi');
                 }
 
-            }else if($rekam->tindakan==null || $rekam->diagnosa==null){
+            }else if($rekam->tindakan==null ){
                 return redirect()->route('rekam.detail',$rekam->pasien_id)
                 ->with('gagal','Tindakan dan Diagnosa Belum diisi');
             }
