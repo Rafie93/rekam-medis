@@ -265,11 +265,9 @@
                                                         <td> {{$item->diagnosis->code}}</td>
                                                         <td>
                                                             
-                                                        @if (($rekamLatest))
-                                                            @if (($rekamLatest->status <= 2))
+                                                        @if (($row->status<=2))
                                                             <a href="{{Route('rekam.diagnosa.delete',$item->id)}}" class="btn btn-danger shadow btn-xs sharp">
                                                                 <i class="fa fa-trash"></i>   </a>
-                                                             @endif
                                                         @endif
                                                         </td>
                                                     </tr>
