@@ -201,10 +201,18 @@
                                                         <li>{{$item->diagnosa.", ".$item->diagnosis->name_id}}</li>
                                                     @endforeach
                                                 @else 
-                                                    {{$row->diagnosa}}
-                                                    @if ($row->diagnosa!=null)
-                                                        <br/>{{$row->diagnosis->name_id}}
-                                                    @endif
+                                                <table>
+                                                    @foreach ($row->diagnosa() as $item)
+                                                    <tr>
+                                                        <td> {{$item->diagnosis->code}}</td>
+                                                       <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">{{$item->diagnosis->name_id}}</td>
+                                                    </tr>
+                                                    @endforeach
+
+                                                </table>
                                                 @endif
                                                 </td>
                                                 <td>{!!$row->status_display()!!}</td>
