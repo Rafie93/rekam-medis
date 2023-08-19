@@ -6,7 +6,7 @@ use App\Models\Pasien;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DataTables;
-use Image;
+// use Image;
 use App\Models\Rekam;
 use App\Models\RekamGigi;
 use App\Models\PengeluaranObat;
@@ -82,8 +82,15 @@ class PasienController extends Controller
 
         $pasien = Pasien::create($request->all());
         if ($request->hasFile('file')) {
-            $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
-            $pasien->general_uncent = $img;
+            // $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            // $pasien->general_uncent = $img;
+            // $pasien->save();
+            $originName = $request->file('file')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('file')->getClientOriginalExtension();
+            $fileName = $pasien->id.'_'.time().'.'.$extension;
+            $request->file('file')->move('images/pasien/',$fileName);
+            $pasien->general_uncent = $fileName;
             $pasien->save();
         }
 
@@ -103,17 +110,24 @@ class PasienController extends Controller
         $data = Pasien::find($id);
         $data->update($request->all());
         if ($request->hasFile('file')) {
-            $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            // $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            // $data->update([
+            //     'general_uncent' => $img
+            // ]);
+            $originName = $request->file('file')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('file')->getClientOriginalExtension();
+            $fileName = $id.'_'.time().'.'.$extension;
+            $request->file('file')->move('images/pasien/',$fileName);
             $data->update([
-                'general_uncent' => $img
+                'general_uncent' => $fileName
             ]);
         }
-
         return redirect()->route('pasien')->with('sukses','Data berhasil diperbaharui');
 
     }
 
-    public function delete(Request $request,$id)
+    function delete(Request $request,$id)
     {
         // Pasien::find($id)->update(['deleted_at'=>Carbon::now()]);
        $suk = Pasien::find($id)->delete();
@@ -125,7 +139,7 @@ class PasienController extends Controller
         return redirect()->route('pasien')->with('sukses','Data berhasil dihapus');
     } 
 
-    public function getLastRM(Request $request)
+    function getLastRM(Request $request)
     {
         if ($code = $request->get('code')){
             $data = Pasien::orderBy('no_rm','desc')

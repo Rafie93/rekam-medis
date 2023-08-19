@@ -123,7 +123,7 @@
                                         <div class="col-8 p-0">
                                           @if ($pasien->general_uncent != null)
                                             <a style="width: 120px"
-                                            class="btn-rounded btn-info btn-xs " href="{{Route('pasien.file',$pasien->id)}}" 
+                                            class="btn-rounded btn-info btn-xs " href="{{$pasien->getGeneralUncent()}}" 
                                             target="__BLANK" view>Lihat Data</a>
 
                                           @else 

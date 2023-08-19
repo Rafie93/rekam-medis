@@ -13,6 +13,10 @@ class Pasien extends Model
     ,"pekerjaan","kewarganegaraan","no_hp","cara_bayar","no_bpjs","deleted_at","alergi"
     ,"general_uncent"];
 
+    function getGeneralUncent(){
+      return $this->general_uncent != null ? asset('images/pasien/'.$this->general_uncent) : null;
+    }
+
     function rekamGigi(){
        return RekamGigi::where('pasien_id',$this->id)->get();
     }
