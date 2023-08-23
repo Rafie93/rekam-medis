@@ -11,6 +11,14 @@ class Rekam extends Model
     "no_rekam","tindakan","status","petugas_id","biaya_pemeriksaan","biaya_tindakan",
     "biaya_obat","total_biaya","cara_bayar","resep_obat","pemeriksaan_file","tindakan_file"];
 
+    function getFilePemeriksaan(){
+        return $this->pemeriksaan_file != null ? asset('images/pemeriksaan/'.$this->pemeriksaan_file) : null;
+    }
+
+    function getFileTindakan(){
+        return $this->tindakan_file != null ? asset('images/pemeriksaan/'.$this->tindakan_file) : null;
+    }
+
     function gigi(){
       return  RekamGigi::where('rekam_id',$this->id)->get();
     }

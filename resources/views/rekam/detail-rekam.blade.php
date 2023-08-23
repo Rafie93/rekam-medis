@@ -245,10 +245,7 @@
                                           @if ($row->pemeriksaan_file !=null)
                                               <br>
                                               <a target="__BLANK"
-                                               href="{{Route('pem.file',[
-                                                'id' => $row->id,
-                                                'type' => 'pem'
-                                              ])}}"> <u style="color:rgb(28, 85, 231);">Lihat Foto</u> </button>
+                                               href="{{$row->getFilePemeriksaan()}}"> <u style="color:rgb(28, 85, 231);">Lihat Foto</u> </button>
                                           @endif
                                         </td>
                                         @endif
@@ -288,10 +285,7 @@
                                              {!! $row->tindakan !!}
                                              @if ($row->tindakan_file !=null)
                                               <br>
-                                              <a target="__BLANK" href="{{Route('pem.file',[
-                                                'id' => $row->id,
-                                                'type' => 'tind'
-                                              ])}}"> <u style="color:rgb(28, 85, 231);">Lihat Foto</u> </button>
+                                              <a target="__BLANK" href="{{$row->getFileTindakan()}}"> <u style="color:rgb(28, 85, 231);">Lihat Foto</u> </button>
                                           @endif
                                             </td>
                                         @endif

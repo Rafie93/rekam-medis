@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rekam;
 use Illuminate\Http\Request;
-use Image;
+// use Image;
 use App\Models\RekamDiagnosa;
 class RekamPemeriksaanController extends Controller
 {
@@ -22,9 +22,14 @@ class RekamPemeriksaanController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            // $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            $originName = $request->file('file')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('file')->getClientOriginalExtension();
+            $fileName = "PEM-".$rekam->tgl_rekam.'.'.$extension;
+            $request->file('file')->move('images/pemeriksaan/',$fileName);
             $rekam->update(
-                ['pemeriksaan_file' => $img]
+                ['pemeriksaan_file' => $fileName]
             );
         }
 
@@ -79,9 +84,14 @@ class RekamPemeriksaanController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            // $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
+            $originName = $request->file('file')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('file')->getClientOriginalExtension();
+            $fileName = "TIND-".$rekam->tgl_rekam.'.'.$extension;
+            $request->file('file')->move('images/pemeriksaan/',$fileName);
             $rekam->update(
-                ['tindakan_file' => $img]
+                ['tindakan_file' => $fileName]
             );
         }
 

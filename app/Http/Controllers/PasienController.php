@@ -82,13 +82,10 @@ class PasienController extends Controller
 
         $pasien = Pasien::create($request->all());
         if ($request->hasFile('file')) {
-            // $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
-            // $pasien->general_uncent = $img;
-            // $pasien->save();
             $originName = $request->file('file')->getClientOriginalName();
             $fileName = pathinfo($originName, PATHINFO_FILENAME);
             $extension = $request->file('file')->getClientOriginalExtension();
-            $fileName = $pasien->id.'_'.time().'.'.$extension;
+            $fileName = $pasien->no_rm.'.'.$extension;
             $request->file('file')->move('images/pasien/',$fileName);
             $pasien->general_uncent = $fileName;
             $pasien->save();
@@ -110,14 +107,10 @@ class PasienController extends Controller
         $data = Pasien::find($id);
         $data->update($request->all());
         if ($request->hasFile('file')) {
-            // $img = Image::make($request->file)->resize(300, 200)->encode('data-url');
-            // $data->update([
-            //     'general_uncent' => $img
-            // ]);
             $originName = $request->file('file')->getClientOriginalName();
             $fileName = pathinfo($originName, PATHINFO_FILENAME);
             $extension = $request->file('file')->getClientOriginalExtension();
-            $fileName = $id.'_'.time().'.'.$extension;
+            $fileName = $data->no_rm.'.'.$extension;
             $request->file('file')->move('images/pasien/',$fileName);
             $data->update([
                 'general_uncent' => $fileName

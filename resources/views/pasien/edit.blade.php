@@ -270,7 +270,7 @@
                             </div>
                             @if ($data->general_uncent)
                                 <div>
-                                    <img src="{{$data->getGeneralUncent()}}" alt="" srcset="">
+                                    <img height="120px" src="{{$data->getGeneralUncent()}}" alt="" srcset="">
                                 </div>
                             @endif
                             <i>Upload File Jika Ingin Mengupdate file General uncent</i>
